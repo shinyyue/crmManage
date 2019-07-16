@@ -51,9 +51,6 @@ import Vuex from 'vuex'
 import store from './vuex/store'
 import Layout from './view/Layout'
 import TimeFormat from './utilities/timeFormat'
-import {
-    globalIM
-} from './mixins/im'
 import TableList from './components/tableList'
 
 Vue.use(Collapse)
@@ -100,8 +97,6 @@ Vue.prototype.$alert = MessageBox.alert
 Vue.use(VueAxios, axios)
 Vue.use(Vuex)
 Vue.use(TimeFormat)
-
-Vue.mixin(globalIM)
 
 Vue.config.productionTip = false
 

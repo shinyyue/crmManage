@@ -9,16 +9,17 @@
                     <span>孕未来医学总管理平台</span>
                     <div class="right-top">
                         <span> 欢迎你, {{userName}}</span>
-                        <div class="right-top" @click="loginOut()">
-                            <img class="right-logout" src="/static/img/logout.svg" />
+                        <div class="right-top"
+                             @click="loginOut()">
+                            <img class="right-logout"
+                                 src="/static/img/logout.svg" />
                             <span>退出</span>
                         </div>
                     </div>
                 </div>
-                <!-- <div class="mian-right-title">{{pageTitle}}</div> -->
                 <el-main class="main-right-wrapper">
                     <slot>
-                        <router-view/>
+                        <router-view />
                     </slot>
                 </el-main>
             </el-col>
@@ -92,70 +93,70 @@ export default {
 
 <style lang="less">
 .layout {
-  height: 100%;
-  height: 100%;
-  .main-wrapper {
     height: 100%;
-    .main-left {
-      width: 220px;
-      height: 100%;
-      background: rgb(84, 92, 100);
-      .el-menu {
-        height: 100%;
-      }
-    }
-    .main-right {
-      // calc属性的兼容问题对chrome和safri较友好。
-      width: calc(100% - 220px);
-      height: 100%;
-      position: relative;
-      .main-right-top {
-        height: 50px;
-        line-height: 50px;
-        background: #fff;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 20px;
-        .right-top {
-          display: flex;
-          align-items: center;
-          cursor: pointer;
-          .right-logout {
-            width: 30px;
-            height: 30px;
-            padding: 5px;
-            margin-left: 30px;
-          }
-        }
-      }
-      .main-right-wrapper {
-        height: calc(100% - 50px);
-        background: #f2f2f2;
-        overflow: auto;
-        .page-title {
-          padding: 10px 0 10px 10px;
-          background: #fff;
-          font-weight: bold;
-          border-bottom: 1px solid #f2f2f3;
-        }
-      }
-    }
-    .el-menu-vertical-demo:not(.el-menu--collapse) {
-      width: 220px;
-      min-height: 400px;
-    }
-  }
-  @media screen and (max-width: 768px) {
+    height: 100%;
     .main-wrapper {
-      .main-left {
-        width: 64px;
-      }
-      .main-right {
-        width: calc(100% - 64px);
-      }
+        height: 100%;
+        .main-left {
+            width: 220px;
+            height: 100%;
+            background: rgb(84, 92, 100);
+            .el-menu {
+                height: 100%;
+            }
+        }
+        .main-right {
+            // calc属性的兼容问题对chrome和safri较友好。
+            width: calc(100% - 220px);
+            height: 100%;
+            position: relative;
+            .main-right-top {
+                height: 50px;
+                line-height: 50px;
+                background: #fff;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 20px;
+                .right-top {
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                    .right-logout {
+                        width: 30px;
+                        height: 30px;
+                        padding: 5px;
+                        margin-left: 30px;
+                    }
+                }
+            }
+            .main-right-wrapper {
+                height: calc(100% - 50px);
+                background: #f2f2f2;
+                overflow: auto;
+                .page-title {
+                    padding: 10px 0 10px 10px;
+                    background: #fff;
+                    font-weight: bold;
+                    border-bottom: 1px solid #f2f2f3;
+                }
+            }
+        }
+        .el-menu-vertical-demo:not(.el-menu--collapse) {
+            width: 220px;
+            min-height: 400px;
+        }
     }
-  }
+    @media screen and (max-width: 768px) {
+        .main-wrapper {
+            .main-left {
+                width: 64px;
+            }
+            .main-right {
+                width: calc(100% - 64px);
+            }
+        }
+    }
 }
 </style>

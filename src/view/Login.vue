@@ -5,15 +5,12 @@
             <section class="form-contianer"
                      v-show="showLogin">
                 <div class="manage_tip">
-                    <h2 class="title">孕未来医学总管理平台</h2>
+                    <h2 class="title">栏目管理平台</h2>
                 </div>
                 <div class="login-tab">
                     <span class="tab-item"
                           :class="{'active': loginType === 0}"
                           @click="changeLoginType('manager')">管理员登录</span>
-                    <!-- <span class="tab-item"
-                          :class="{'active': loginType === 1}"
-                          @click="changeLoginType('doctor')">医生登录</span> -->
                 </div>
                 <el-form :model="loginForm"
                          :rules="rules"
@@ -42,7 +39,6 @@
                                    @click="submitForm('loginForm')"
                                    class="submit_btn">登录</el-button>
                     </el-form-item>
-                    <div class="login-tips">孕未来（上海）健康科技有限公司 © 2017</div>
                 </el-form>
             </section>
         </transition>
@@ -51,7 +47,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import md5 from 'md5'
 export default {
     data() {
         return {
@@ -84,11 +79,8 @@ export default {
             this.$refs[loginForm].validate(valid => {
                 if (valid) {
                     const data = {
-                        data: {
-                            pwd: this.loginForm.password,
-                            code: this.loginForm.username,
-                            udid: md5(window.navigator.userAgent) // eslint-disable-line
-                        }
+                        password: this.loginForm.password,
+                        snoOrJno: this.loginForm.username
                     }
                     this.getLoginIn(data).then(res => {
                         if (res.status === 1) {
