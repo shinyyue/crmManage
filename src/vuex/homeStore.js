@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import service from '../services/homeService'
+import service from '../services/service'
 import Common from '../utilities/common'
 import {
     MENUS_LIST
@@ -13,13 +13,6 @@ const actions = {
             service
                 .loginIn(data)
                 .then(res => {
-                    if (res.status === 0) {
-                        localStorage.setItem('token', res.data.token)
-                        localStorage.setItem('userId', res.data.id)
-                        localStorage.setItem('userName', res.data.name)
-                        localStorage.setItem('product_code', res.data.product_code)
-                        localStorage.setItem('userAvt', res.data.avt)
-                    }
                     resolve(res)
                 })
                 .catch(err => {
@@ -31,12 +24,25 @@ const actions = {
     manuallyLoginOut({
         commit
     }) {
-        localStorage.removeItem('token')
         localStorage.removeItem('userId')
-        localStorage.removeItem('product_code')
         localStorage.removeItem('userName')
         return new Promise((resolve) => {
             resolve(true)
+        })
+    },
+
+    getColumnList({
+        commit
+    }, data) {
+        return new Promise((resolve, reject) => {
+            service
+                .getColumnList(data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
         })
     },
 
@@ -59,7 +65,6 @@ const actions = {
             service
                 .getAuthList(data)
                 .then(res => {
-                    // todo: 将权限列表存到localStorage
                     localStorage.setItem('authList', res)
                     resolve(res)
                 })

@@ -105,11 +105,9 @@ Vue.component(TableList.name, TableList)
 
 // 路由拦截
 router.beforeEach((to, from, next) => {
-    // const isLogined = !((!store.state.homeStore.token ||
-    //         !store.state.homeStore.userInfo.token) &&
-    //     (!localStorage.getItem('token') ||
-    //         typeof localStorage.getItem('token') === 'undefined')) // 无token去登录
-    // if (!isLogined && to.name !== 'Login') {
+    // const user = localStorage.getItem('userId') && localStorage.getItem('userId') !== 'undefined' && JSON.parse(localStorage.getItem('userId'))
+    // const isNotLogined = !user // 无token去登录
+    // if (!isNotLogined && to.name !== 'Login') {
     //     next({
     //         path: '/login',
     //         query: {

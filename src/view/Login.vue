@@ -84,6 +84,11 @@ export default {
                     }
                     this.getLoginIn(data).then(res => {
                         if (res.code === 200) {
+                            localStorage.setItem('userId', res.data.vsMpUser.id)
+                            localStorage.setItem(
+                                'userName',
+                                res.data.vsMpUser.userName
+                            )
                             this.$router.push({
                                 path: '/column/list'
                             })
