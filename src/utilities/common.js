@@ -1,27 +1,26 @@
 // 所有的导航菜单
 const allMenus = [{
-    displayName: '患者管理',
-    key: 'patient',
+    displayName: '栏目',
+    key: 'column',
     subMenu: [{
-        displayName: '患者列表',
-        key: 'patient_list'
+        displayName: '栏目列表',
+        key: 'column_list'
     }]
 },
 {
-    displayName: '医学顾问模块',
-    key: 'im',
+    displayName: '栏目内容',
+    key: 'columnContent',
     subMenu: [{
-        displayName: '医学顾问会话',
-        key: 'im_index'
+        displayName: '栏目内容列表',
+        key: 'columnContent_list'
     },
     {
-        displayName: '医学顾问快捷回复管理',
-        key: 'im_manage'
+        displayName: '栏目内容编辑页',
+        key: 'columnContent_update'
     }
     ]
 }
 ]
-// const formatCycleType = cId => {//     // switch(cId) {//     //     case: 10//     //         return ''//     // }// }
 
 // 检验是否具有某个操作权限
 const checkAuthKey = key => {
@@ -34,5 +33,4 @@ const checkAuthKey = key => {
 export default {
     allMenus,
     checkAuthKey
-    // formatCycleType
 }

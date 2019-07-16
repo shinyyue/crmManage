@@ -105,20 +105,20 @@ Vue.component(TableList.name, TableList)
 
 // 路由拦截
 router.beforeEach((to, from, next) => {
-    const isLogined = !((!store.state.homeStore.token ||
-            !store.state.homeStore.userInfo.token) &&
-        (!localStorage.getItem('token') ||
-            typeof localStorage.getItem('token') === 'undefined')) // 无token去登录
-    if (!isLogined && to.name !== 'Login') {
-        next({
-            path: '/login',
-            query: {
-                redirect: to.fullPath
-            }
-        })
-    } else {
-        next()
-    }
+    // const isLogined = !((!store.state.homeStore.token ||
+    //         !store.state.homeStore.userInfo.token) &&
+    //     (!localStorage.getItem('token') ||
+    //         typeof localStorage.getItem('token') === 'undefined')) // 无token去登录
+    // if (!isLogined && to.name !== 'Login') {
+    //     next({
+    //         path: '/login',
+    //         query: {
+    //             redirect: to.fullPath
+    //         }
+    //     })
+    // } else {
+    next()
+    // }
 })
 
 // 接口请求拦截

@@ -83,20 +83,13 @@ export default {
                         snoOrJno: this.loginForm.username
                     }
                     this.getLoginIn(data).then(res => {
-                        if (res.status === 1) {
+                        if (res.code === 200) {
+                            this.$router.push({
+                                path: '/column/list'
+                            })
+                        } else {
                             this.$notify.error({
                                 message: res.msg
-                            })
-                        } else if (res.status === 0) {
-                            this.$store.dispatch('setKefuAvator', res.data.avt)
-                            // 登录成功连接IM通信
-                            this.initWebSocket()
-                            // 登录成功，将用户基本信息保存到store里，token存到localStorage里面
-                            this.$router.push({
-                                path: '/home',
-                                query: {
-                                    redirect: this.$route.path
-                                }
                             })
                         }
                     })

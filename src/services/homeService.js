@@ -13,8 +13,9 @@ const getAuthList = (data) => {
 }
 
 const getMenus = (data) => {
-    // todo 替换为菜单接口
-    return Vue.axios.post(API_ROOT + 'newapi/patient/list', data)
+    return new Promise((resolve) => {
+        resolve([])
+    })
 }
 export default {
     loginIn,

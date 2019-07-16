@@ -1,45 +1,40 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-const Home = (resolve) => require(['@/view/Home'], resolve)
 const Login = (resolve) => require(['@/view/Login'], resolve)
-// const IMIndex = (resolve) => require(['@/view/IMService/index'], resolve)
-// const IMManage = (resolve) => require(['@/view/IMService/manage'], resolve)
-const PatientList = (resolve) => require(['@/view/Patient/list'], resolve)
-const PatientDetails = (resolve) => require(['@/view/Patient/details'], resolve)
+const ColumnList = (resolve) => require(['@/view/Column/list'], resolve)
+const ColumnContentList = (resolve) => require(['@/view/ColumnContent/list'], resolve)
+const ColumnContentUpdate = (resolve) => require(['@/view/ColumnContent/update'], resolve)
 Vue.use(Router)
 
 export default new Router({
     mode: 'history',
     routes: [{
         path: '*',
-        redirect: '/home'
-    }, {
-        path: '/home',
-        name: 'Home',
-        component: Home,
-        meta: {
-            requiresAuth: true
-        }
+        redirect: '/column/list'
     }, {
         path: '/login',
         name: 'Login',
         component: Login
-    },
-    {
-        path: '/patient_list',
-        name: 'patientList',
-        component: PatientList,
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/patient_list/patient_details',
-        name: 'patientDetails',
-        component: PatientDetails,
-        meta: {
-            requiresAuth: true
-        }
-    }
-    ]
+    }, {
+        path: '/column/list',
+        name: 'columnList',
+        component: ColumnList
+        // meta: {
+        //     requiresAuth: true
+        // }
+    }, {
+        path: '/columncontent/list',
+        name: 'columnContentList',
+        component: ColumnContentList
+        // meta: {
+        //     requiresAuth: true
+        // }
+    }, {
+        path: '/columncontent/update',
+        name: 'columnContentUpdate',
+        component: ColumnContentUpdate
+        // meta: {
+        //     requiresAuth: true
+        // }
+    }]
 })

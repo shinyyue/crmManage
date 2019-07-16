@@ -6,7 +6,7 @@
             </el-col>
             <el-col class="main-right">
                 <div class="main-right-top">
-                    <span>孕未来医学总管理平台</span>
+                    <span>管理平台</span>
                     <div class="right-top">
                         <span> 欢迎你, {{userName}}</span>
                         <div class="right-top"
@@ -83,9 +83,6 @@ export default {
                 window.screenWidth = document.body.clientWidth
                 that.docWidth = window.screenWidth
             })()
-        }
-        if (!this.$store.state.imStore.ws && window.localStorage.token) {
-            this.initWebSocket()
         }
     }
 }

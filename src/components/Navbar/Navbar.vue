@@ -8,12 +8,12 @@
                  :unique-opened="false"
                  :collapse="collapse"
                  :collapse-transition="false">
-            <el-menu-item index="/home"
+            <!-- <el-menu-item index="/home"
                           class="submenu-item"
                           :class="{'active': currentRoute === '/home'}">
                 <i class="el-icon-home"></i>
                 <span class="menu-text">首页</span>
-            </el-menu-item>
+            </el-menu-item> -->
             <template v-for="(item ,index) in menus">
                 <!-- 有子菜单时用 el-submenu -->
                 <el-submenu :index="'/'+item.key"
@@ -113,15 +113,15 @@ export default {
             color: #a7b1c2;
         }
         .el-icon-home {
-            background: url("../../../static/img/home.svg") no-repeat;
+            background: url('../../../static/img/home.svg') no-repeat;
             background-size: 100% 100%;
         }
         .el-icon-im {
-            background: url("../../../static/img/cs.svg") no-repeat;
+            background: url('../../../static/img/cs.svg') no-repeat;
             background-size: 100% 100%;
         }
         .el-icon-patient {
-            background: url("../../../static/img/patient-list.svg") no-repeat;
+            background: url('../../../static/img/patient-list.svg') no-repeat;
             background-size: 100% 100%;
         }
         &.active {
@@ -131,15 +131,15 @@ export default {
                 color: #1ab394;
             }
             .el-icon-home {
-                background: url("../../../static/img/home-active.svg") no-repeat;
+                background: url('../../../static/img/home-active.svg') no-repeat;
                 background-size: 100% 100%;
             }
             .el-icon-im {
-                background: url("../../../static/img/cs-active.svg") no-repeat;
+                background: url('../../../static/img/cs-active.svg') no-repeat;
                 background-size: 100% 100%;
             }
             .el-icon-patient {
-                background: url("../../../static/img/patient-list-active.svg")
+                background: url('../../../static/img/patient-list-active.svg')
                     no-repeat;
                 background-size: 100% 100%;
             }

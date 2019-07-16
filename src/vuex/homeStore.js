@@ -44,38 +44,12 @@ const actions = {
         commit
     }, data) {
         return new Promise((resolve, reject) => {
-            service
-                .getMenus(data)
-                .then(res => {
-                    // todo 删除测试数据
-                    const a = [{
-                        displayName: '患者管理',
-                        key: 'patient',
-                        subMenu: [{
-                            displayName: '患者列表',
-                            key: 'patient_list'
-                        }]
-                    },
-                    {
-                        displayName: '医学顾问模块',
-                        key: 'im',
-                        subMenu: [{
-                            displayName: '医学顾问会话',
-                            key: 'im_index'
-                        },
-                        {
-                            displayName: '医学顾问快捷回复管理',
-                            key: 'im_manage'
-                        }
-                        ]
-                    }
-                    ]
-                    commit(MENUS_LIST, a)
-                    resolve(res)
-                })
-                .catch(err => {
-                    reject(err)
-                })
+            const a = [{
+                displayName: '栏目列表',
+                key: 'column'
+            }]
+            commit(MENUS_LIST, a)
+            resolve(a)
         })
     },
     getAuthList({
