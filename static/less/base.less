@@ -1,0 +1,180 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+}
+
+div,
+ul,
+li,
+span {
+    box-sizing: border-box;
+}
+
+.container {
+    width: 1140px;
+    margin: 0 auto;
+}
+
+a {
+    text-decoration: none;
+    color: #1ab394;
+    cursor: pointer;
+}
+
+ul,
+menu,
+dir {
+    margin: 0;
+    padding: 0;
+}
+
+ul li {
+    list-style: none;
+}
+
+button,
+textarea,
+input {
+    outline: none;
+    cursor: pointer;
+}
+
+// @default-color: #ffd04b;
+@default-color: #1ab394;
+
+// @default-color: #409EFF;
+// 通用样式
+.query-condition {
+    background: #fff;
+    margin: 10px 0;
+
+    .query-condition-group {
+        margin-bottom: 10px;
+    }
+
+    .condition-item {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+
+        .condition-item-label {
+            margin-right: 10px;
+        }
+
+        .query-theme {
+            flex: 1;
+        }
+    }
+}
+
+.el-input {
+    min-height: 30px;
+}
+
+.el-input__inner {
+    height: 30px;
+    line-height: 30px;
+}
+
+// 重写组件库样式
+.el-button--primary,
+.el-button--primary:hover {
+    background-color: @default-color;
+    border-color: @default-color;
+    padding: 6px 15px;
+}
+
+.el-button--danger,
+.el-button--danger:hover {
+    padding: 6px 15px;
+}
+
+.el-button--primary.is-plain,
+.el-button--primary.is-plain:hover {
+    background-color: #fff;
+    color: @default-color;
+    border-color: @default-color;
+}
+
+.el-dialog__header {
+    padding: 10px;
+    background: #2f4050;
+    color: #fff;
+    text-align: left;
+
+    .el-dialog__headerbtn {
+        top: 10px;
+        right: 10px;
+    }
+}
+
+.el-dialog__body {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.el-table,
+.el-table thead,
+.el-table tbody {
+    color: #333;
+
+    &.has-gutter th {
+        background: @default-color;
+        color: #fff;
+    }
+}
+
+.el-table td {
+    padding: 8px 0;
+}
+
+.el-table th {
+    padding: 8px 0;
+}
+
+.el-popover {
+    height: 400px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.el-input__inner {
+    min-height: 30px;
+}
+
+.el-input.is-disabled .el-input__inner {
+    color: #666;
+}
+
+.el-date-editor {
+
+    .el-range__icon,
+    .el-range-separator {
+        line-height: 24px;
+    }
+
+    .el-input__icon {
+        line-height: 24px;
+    }
+}
+
+.el-cascader {
+    max-width: 200px;
+
+    .el-cascader__label {
+        max-width: 200px;
+    }
+}
+
+.el-checkbox+.el-checkbox {
+    // margin-left: 0;
+    margin: 0 0px 0 20px;
+
+    .el-checkbox__label {
+        padding-left: 4px;
+    }
+}
