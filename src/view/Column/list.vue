@@ -128,7 +128,11 @@ export default {
         handleSizeChange() {},
         handleCurrentChange(page) {
             this.currentPage = page
-            this.getList()
+            if (this.id) {
+                this.getColumnListById()
+            } else {
+                this.getList()
+            }
         },
         operateClick(props, item) {
             console.log(111, item, props.column.label)

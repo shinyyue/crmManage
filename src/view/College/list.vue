@@ -2,7 +2,7 @@
     <layout id="college_list">
         <div style="text-align: right; padding: 10px;">
             <el-button type="primary"
-                       @click="addCollege">添加学院</el-button>
+                       @click="addCollegeEvt">添加学院</el-button>
         </div>
         <tableList @handleSizeChange="handleSizeChange"
                    @handleCurrentChange="handleCurrentChange"
@@ -16,6 +16,31 @@
                    :pageSize="currentPageSize"
                    ref="allPatientTable">
         </tableList>
+        <el-dialog :title="dialogTitle"
+                   :visible.sync="dialogVisible"
+                   width="30%"
+                   :before-close="handleClose">
+            <el-form ref="form"
+                     :model="form"
+                     label-width="80px">
+                <el-form-item label="学院名称"
+                              required
+                              prop="name">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="学院编号"
+                              required
+                              prop="code">
+                    <el-input v-model="form.code"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer"
+                  class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary"
+                           @click="updateCollege()">确 定</el-button>
+            </span>
+        </el-dialog>
     </layout>
 </template>
 
@@ -52,10 +77,24 @@ export default {
                     operations: ['查看栏目'],
                     width: 100
                 }
-            ]
+            ],
+            dialogVisible: false,
+            form: {
+                name: '',
+                code: ''
+            },
+            isAddOrEdit: true
+        }
+    },
+    computed: {
+        dialogTitle() {
+            return this.id ? '修改学院' : '添加学院'
         }
     },
     methods: {
+        addCollegeEvt() {
+            this.dialogVisible = true
+        },
         handleSizeChange() {},
         handleCurrentChange(page) {
             this.currentPage = page
@@ -93,12 +132,77 @@ export default {
                 }
             })
         },
-        addCollege() {},
         jumpToDetails(props) {
             this.$router.push({
                 path: '/column/list',
                 query: {
                     id: props.row.id
+                }
+            })
+        },
+        handleClose() {},
+        updateCollege() {
+            this.dialogVisible = false
+            if (!this.form.name) {
+                this.$notify.error({
+                    message: '请填写学院名称',
+                    duration: '1000'
+                })
+                return
+            }
+            this.id ? this.editCollege() : this.addCollege()
+        },
+        addCollege() {
+            const data = {
+                id: this.id,
+                collegeName: this.form.name
+            }
+            this.$store.dispatch('addCollege', data).then(res => {
+                if (res.code === 200) {
+                    this.$notify.success({
+                        message: '修改成功！',
+                        duration: '1000'
+                    })
+                } else if (res.code === 401) {
+                    this.$store.dispatch('manuallyLoginOut')
+                    this.$router.push({
+                        path: '/login',
+                        query: {
+                            redirect: this.$route.path
+                        }
+                    })
+                } else {
+                    this.$notify.error({
+                        message: res.msg || '修改失败！',
+                        duration: '1000'
+                    })
+                }
+            })
+        },
+        editCollege() {
+            const data = {
+                id: this.id,
+                collegeName: this.form.name
+            }
+            this.$store.dispatch('updateCollege', data).then(res => {
+                if (res.code === 200) {
+                    this.$notify.success({
+                        message: '修改成功！',
+                        duration: '1000'
+                    })
+                } else if (res.code === 401) {
+                    this.$store.dispatch('manuallyLoginOut')
+                    this.$router.push({
+                        path: '/login',
+                        query: {
+                            redirect: this.$route.path
+                        }
+                    })
+                } else {
+                    this.$notify.error({
+                        message: res.msg || '修改失败！',
+                        duration: '1000'
+                    })
                 }
             })
         }
@@ -110,4 +214,9 @@ export default {
 </script>
 
 <style lang="less">
+#college_list {
+    .el-dialog__title {
+        color: #fff;
+    }
+}
 </style>

@@ -76,6 +76,36 @@ const actions = {
         })
     },
 
+    addCollege({
+        commit
+    }, data) {
+        return new Promise((resolve, reject) => {
+            service
+                .addCollege(data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    updateCollege({
+        commit
+    }, data) {
+        return new Promise((resolve, reject) => {
+            service
+                .updateCollege(data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
     getColumnListById({
         commit
     }, data) {

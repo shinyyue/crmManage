@@ -23,6 +23,14 @@ const getColumnListById = (data) => {
     return Vue.axios.post(API_ROOT + 'crmColleController/queryColumnList', data)
 }
 
+const updateCollege = (data) => {
+    return Vue.axios.put(API_ROOT + 'crmColleController/updateCrmCollege', data)
+}
+
+const addCollege = (data) => {
+    return Vue.axios.put(API_ROOT + 'crmColleController/addCrmCollege', data)
+}
+
 // 获得操作权限列表
 const getAuthList = (data) => {
     return Vue.axios.post('', data)
@@ -33,5 +41,7 @@ export default {
     getColumnList,
     getColumnContentList,
     getCollegeList,
-    getColumnListById
+    getColumnListById,
+    updateCollege,
+    addCollege
 }
