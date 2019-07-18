@@ -1,14 +1,13 @@
 <template>
-    <layout id="column_content_list">
+    <layout id="college_list">
         <div style="text-align: right; padding: 10px;">
             <el-button type="primary"
-                       @click="addColumnContent">添加栏目内容</el-button>
+                       @click="addCollege">添加学院</el-button>
         </div>
         <tableList @handleSizeChange="handleSizeChange"
                    @handleCurrentChange="handleCurrentChange"
                    @operateImg="jumpToDetails"
                    @operateClick="operateClick"
-                   :loading="loading"
                    :tableData="list"
                    :totalNum="totalNum"
                    :colNameMap="colNameMap"
@@ -25,30 +24,24 @@ export default {
     data() {
         return {
             list: [],
-            loading: false,
             totalNum: 0,
             currentPageSize: 20,
             currentPage: 1,
             colNameMap: [
                 {
-                    displayName: '栏目ID',
+                    displayName: '学院ID',
                     key: 'id',
                     width: '80px',
                     align: 'center'
                 },
                 {
-                    displayName: '栏目名称',
-                    key: 'columnName',
+                    displayName: '学院名称',
+                    key: 'collegeName',
                     align: 'center'
                 },
                 {
-                    displayName: '所属学院',
-                    key: 'collegeId',
-                    align: 'center'
-                },
-                {
-                    displayName: '更新时间',
-                    key: 'updateTime',
+                    displayName: '学院编码',
+                    key: 'collegeCode',
                     align: 'center'
                 },
                 {
@@ -56,31 +49,29 @@ export default {
                     align: 'center',
                     fixed: 'right',
                     type: 'operation',
-                    operations: ['详情'],
+                    operations: ['查看栏目'],
                     width: 100
                 }
             ]
         }
     },
-    computed: {
-        id: function() {
-            console.log(2222, this.$route.query)
-            return this.$route.query.id
-        },
-        collegeId: function() {
-            return this.$route.query.collegeId
-        }
-    },
-
     methods: {
+        handleSizeChange() {},
+        handleCurrentChange(page) {
+            this.currentPage = page
+            this.getList()
+        },
+        operateClick(props, item) {
+            if (item === '查看栏目') {
+                this.jumpToDetails(props)
+            }
+        },
         getList() {
             const data = {
-                page: this.currentPage,
-                rows: this.currentPageSize,
-                collegeId: this.collegeId,
-                columnId: this.id
+                page: 1,
+                rows: 20
             }
-            this.$store.dispatch('getColumnContentList', data).then(res => {
+            this.$store.dispatch('getCollegeList', data).then(res => {
                 if (res.code === 401) {
                     this.$store.dispatch('manuallyLoginOut')
                     this.$router.push({
@@ -102,22 +93,12 @@ export default {
                 }
             })
         },
-        handleSizeChange() {},
-        handleCurrentChange(page) {
-            this.currentPage = page
-            this.getList()
-        },
-        operateClick(props, item) {
-            console.log(111, item, props.column.label)
-            // if (item === '详情') {
-            //     this.jumpToDetails(props)
-            // }
-        },
-        addColumnContent(props) {
+        addCollege() {},
+        jumpToDetails(props) {
             this.$router.push({
-                path: '/columncontent/update',
+                path: '/column/list',
                 query: {
-                    id: props.id
+                    id: props.row.id
                 }
             })
         }

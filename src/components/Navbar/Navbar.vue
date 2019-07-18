@@ -6,43 +6,19 @@
                  active-text-color="#1ab394"
                  :router="true"
                  :unique-opened="false"
-                 :collapse="collapse"
                  :collapse-transition="false">
-            <!-- <el-menu-item index="/home"
+            <el-menu-item index="/college/list"
                           class="submenu-item"
-                          :class="{'active': currentRoute === '/home'}">
+                          :class="{'active': currentRoute === '/college/list'}">
                 <i class="el-icon-home"></i>
-                <span class="menu-text">首页</span>
-            </el-menu-item> -->
-            <template v-for="(item ,index) in menus">
-                <!-- 有子菜单时用 el-submenu -->
-                <el-submenu :index="'/'+item.key"
-                            :key="`menu0_${index}`"
-                            v-if="item.subMenu && item.subMenu.length > 0"
-                            class="submenu-item"
-                            :class="{'active': currentRoute.indexOf('/' + item.key) > -1}">
-                    <template slot="title">
-                        <i :class="'el-icon-' + item.key"></i>
-                        <span class="menu-text">{{item.displayName}}</span>
-                    </template>
-                    <el-menu-item-group>
-                        <!-- 权限的key对应路由地址 -->
-                        <el-menu-item :index="'/' + sub.key"
-                                      :key="`submunu_${sub.key}`"
-                                      v-for="sub in item.subMenu"
-                                      :class="{'active': currentRoute.indexOf('/' + item.key) > -1}">{{sub.displayName}}</el-menu-item>
-                    </el-menu-item-group>
-                </el-submenu>
-                <!-- 没有子菜单时用 el-menu-item -->
-                <el-menu-item :index="'/'+item.key"
-                              :key="`menu1_${index}`"
-                              v-else
-                              class="submenu-item"
-                              :class="{'active': currentRoute.indexOf('/' + item.key) > -1}">
-                    <i :class="'el-icon-' + item.key"></i>
-                    <span class="menu-text">{{item.displayName}}</span>
-                </el-menu-item>
-            </template>
+                <span class="menu-text">学院列表</span>
+            </el-menu-item>
+            <el-menu-item index="/column/list"
+                          class="submenu-item"
+                          :class="{'active': currentRoute === '/column/list'}">
+                <i class="el-icon-home"></i>
+                <span class="menu-text">栏目列表</span>
+            </el-menu-item>
         </el-menu>
     </div>
 </template>
@@ -63,6 +39,7 @@ export default {
             return '/' + this.$router.currentRoute.path.replace(/\//, '')
         },
         menus() {
+            console.log(33333, this.$store.state.homeStore.menusList)
             return this.$store.state.homeStore.menusList
         }
     },

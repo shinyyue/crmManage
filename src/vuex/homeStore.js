@@ -46,6 +46,51 @@ const actions = {
         })
     },
 
+    getColumnContentList({
+        commit
+    }, data) {
+        return new Promise((resolve, reject) => {
+            service
+                .getColumnContentList(data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    getCollegeList({
+        commit
+    }, data) {
+        return new Promise((resolve, reject) => {
+            service
+                .getCollegeList(data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    getColumnListById({
+        commit
+    }, data) {
+        return new Promise((resolve, reject) => {
+            service
+                .getColumnListById(data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
     getMenus({
         commit
     }, data) {
@@ -53,6 +98,9 @@ const actions = {
             const a = [{
                 displayName: '栏目列表',
                 key: 'column'
+            }, {
+                displayName: '学院列表',
+                key: 'college'
             }]
             commit(MENUS_LIST, a)
             resolve(a)

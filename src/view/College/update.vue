@@ -1,7 +1,5 @@
 <template>
-    <div id="column_content_update">
-
-    </div>
+    <layout id="college_update"></layout>
 </template>
 
 <script>
