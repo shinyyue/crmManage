@@ -91,12 +91,43 @@ const actions = {
         })
     },
 
+    deleteCollege({
+        commit
+    }, data) {
+        return new Promise((resolve, reject) => {
+            service
+                .deleteCollege(data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+
     updateCollege({
         commit
     }, data) {
         return new Promise((resolve, reject) => {
             service
                 .updateCollege(data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    editColumn({
+        commit
+    }, data) {
+        return new Promise((resolve, reject) => {
+            service
+                .editColumn(data)
                 .then(res => {
                     resolve(res)
                 })

@@ -120,7 +120,8 @@ export default {
                     id: props.id
                 }
             })
-        }
+        },
+        jumpToDetails() {}
     },
     mounted() {
         this.getList()

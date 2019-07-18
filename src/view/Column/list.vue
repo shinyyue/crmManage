@@ -13,6 +13,24 @@
                    :pageSize="currentPageSize"
                    ref="allPatientTable">
         </tableList>
+        <el-dialog title="修改学院"
+                   :visible.sync="dialogVisible"
+                   width="30%"
+                   :before-close="handleClose">
+            <el-form ref="form"
+                     :model="form"
+                     label-width="80px">
+                <el-form-item label="栏目名称">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer"
+                  class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary"
+                           @click="updateColumn()">确 定</el-button>
+            </span>
+        </el-dialog>
     </layout>
 </template>
 
@@ -25,6 +43,7 @@ export default {
             totalNum: 0,
             currentPageSize: 20,
             currentPage: 1,
+            form: { name: '' },
             colNameMap: [
                 {
                     displayName: '栏目ID',
@@ -52,16 +71,17 @@ export default {
                     align: 'center',
                     fixed: 'right',
                     type: 'operation',
-                    operations: ['详情'],
-                    width: 100
+                    operations: ['修改', '查看栏目内容'],
+                    width: 200
                 }
-            ]
+            ],
+            dialogVisible: false,
+            checkedColumn: null
         }
     },
 
     computed: {
         id: function() {
-            console.log(2222, this.$route.query)
             return this.$route.query.id
         },
         collegeId: function() {
@@ -125,6 +145,9 @@ export default {
                 }
             })
         },
+        handleClose() {
+            this.dialogVisible = false
+        },
         handleSizeChange() {},
         handleCurrentChange(page) {
             this.currentPage = page
@@ -135,9 +158,12 @@ export default {
             }
         },
         operateClick(props, item) {
-            console.log(111, item, props.column.label)
-            if (item === '详情') {
+            if (item === '查看栏目内容') {
                 this.jumpToDetails(props)
+            } else if (item === '修改') {
+                this.form.name = props.row.columnName
+                this.dialogVisible = true
+                this.checkedColumn = props.row
             }
         },
         jumpToDetails(props) {
@@ -148,9 +174,58 @@ export default {
                     collegeId: props.row.collegeId
                 }
             })
+        },
+        updateColumn() {
+            console.log(2222, this.checkedColumn)
+            if (!this.form.name) {
+                this.$notify.error({
+                    message: '请填写栏目名称',
+                    duration: '1000'
+                })
+                return
+            }
+            const data = {
+                collegeId: this.id,
+                columnId: this.checkedColumn.id,
+                columnName: this.form.name
+            }
+            this.$store
+                .dispatch('editColumn', {
+                    params: data
+                })
+                .then(res => {
+                    if (res.code === 200) {
+                        this.$notify.success({
+                            message: '修改成功！',
+                            duration: '1000'
+                        })
+                        this.dialogVisible = false
+                        this.currentPage = 1
+                        if (this.id) {
+                            this.getColumnListById()
+                        } else {
+                            this.getList()
+                        }
+                    } else if (res.code === 401) {
+                        this.$store.dispatch('manuallyLoginOut')
+                        this.$router.push({
+                            path: '/login',
+                            query: {
+                                redirect: this.$route.path
+                            }
+                        })
+                    } else {
+                        this.$notify.error({
+                            message: res.msg || '修改失败！',
+                            duration: '1000'
+                        })
+                    }
+                })
         }
     },
     mounted() {
+        console.log(2222, this.id)
+
         if (this.id) {
             this.getColumnListById()
         } else {

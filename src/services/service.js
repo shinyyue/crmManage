@@ -28,8 +28,22 @@ const updateCollege = (data) => {
 }
 
 const addCollege = (data) => {
-    return Vue.axios.put(API_ROOT + 'crmColleController/addCrmCollege', data)
+    return Vue.axios.post(API_ROOT + 'crmColleController/addCrmCollege', data)
 }
+
+const deleteCollege = (data) => {
+    return Vue.axios.delete(API_ROOT + 'crmColleController/deleteCrmCollege', data)
+}
+
+const editCollege = (data) => {
+    return Vue.axios.post(API_ROOT + 'crmColleController/updateCrmCollege', data)
+}
+
+
+const editColumn = (data) => {
+    return Vue.axios.get(API_ROOT + 'crmColleController/queryOneColumn', data)
+}
+
 
 // 获得操作权限列表
 const getAuthList = (data) => {
@@ -43,5 +57,8 @@ export default {
     getCollegeList,
     getColumnListById,
     updateCollege,
-    addCollege
+    addCollege,
+    deleteCollege,
+    editCollege,
+    editColumn
 }

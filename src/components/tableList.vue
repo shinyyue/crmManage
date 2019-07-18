@@ -167,7 +167,7 @@ export default {
         // 数据格式处理方法
         formatter: {
             type: Function,
-            default: () => { }
+            default: () => {}
         },
         // 是否自定义列
         customize: {
@@ -267,19 +267,19 @@ export default {
         width: 100%;
         overflow: inherit;
         word-break: break-all;
-        .el-button {
-            width: 100%;
-            height: 100%;
-            padding: 0;
-            display: block;
-            white-space: unset;
-            > span {
-                display: block;
-                width: 100%;
-                height: 100%;
-                word-break: break-all;
-            }
-        }
+        // .el-button {
+        //     width: 100%;
+        //     height: 100%;
+        //     padding: 0;
+        //     display: block;
+        //     white-space: unset;
+        //     // > span {
+        //     //     display: block;
+        //     //     width: 100%;
+        //     //     height: 100%;
+        //     //     word-break: break-all;
+        //     // }
+        // }
     }
 }
 </style>

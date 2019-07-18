@@ -7,4 +7,15 @@ const customAxios = axios.create({
 })
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 
+// 接口请求统一参数配置
+axios.interceptors.request.use(
+    conf => {
+        if (conf.method === 'get') {
+            conf.params = conf.data
+        }
+        return Object.assign({}, conf, {})
+    },
+    err => Promise.reject(err)
+)
+
 export default customAxios

@@ -24,12 +24,10 @@
                      :model="form"
                      label-width="80px">
                 <el-form-item label="学院名称"
-                              required
                               prop="name">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
                 <el-form-item label="学院编号"
-                              required
                               prop="code">
                     <el-input v-model="form.code"></el-input>
                 </el-form-item>
@@ -74,8 +72,8 @@ export default {
                     align: 'center',
                     fixed: 'right',
                     type: 'operation',
-                    operations: ['查看栏目'],
-                    width: 100
+                    operations: ['修改信息', '查看栏目', '删除学院'],
+                    width: 200
                 }
             ],
             dialogVisible: false,
@@ -83,17 +81,21 @@ export default {
                 name: '',
                 code: ''
             },
-            isAddOrEdit: true
+            curCollege: null,
+            isAddOrEdit: true,
+            dialogTitle: '添加学院'
         }
     },
-    computed: {
-        dialogTitle() {
-            return this.id ? '修改学院' : '添加学院'
+    watch: {
+        isAddOrEdit(val) {
+            this.dialogTitle = val ? '添加学院' : '修改学院'
         }
     },
     methods: {
         addCollegeEvt() {
             this.dialogVisible = true
+            this.isAddOrEdit = true
+            this.form = {}
         },
         handleSizeChange() {},
         handleCurrentChange(page) {
@@ -103,6 +105,31 @@ export default {
         operateClick(props, item) {
             if (item === '查看栏目') {
                 this.jumpToDetails(props)
+            } else if (item === '修改信息') {
+                this.dialogVisible = true
+                this.isAddOrEdit = false
+                this.curCollege = props.row
+                this.form.name = props.row.collegeName
+                this.form.code = props.row.collegeCode
+            } else if (item === '删除学院') {
+                this.$confirm('是否删除该学院?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                })
+                    .then(() => {
+                        this.deleteCollege(props.row)
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        })
+                    })
+                    .catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        })
+                    })
             }
         },
         getList() {
@@ -140,9 +167,10 @@ export default {
                 }
             })
         },
-        handleClose() {},
-        updateCollege() {
+        handleClose() {
             this.dialogVisible = false
+        },
+        updateCollege() {
             if (!this.form.name) {
                 this.$notify.error({
                     message: '请填写学院名称',
@@ -150,19 +178,29 @@ export default {
                 })
                 return
             }
-            this.id ? this.editCollege() : this.addCollege()
+            if (!this.form.code) {
+                this.$notify.error({
+                    message: '请填写学院编码',
+                    duration: '1000'
+                })
+                return
+            }
+            this.isAddOrEdit ? this.addCollege() : this.editCollege()
         },
         addCollege() {
             const data = {
-                id: this.id,
+                collegeCode: this.form.code,
                 collegeName: this.form.name
             }
             this.$store.dispatch('addCollege', data).then(res => {
                 if (res.code === 200) {
                     this.$notify.success({
-                        message: '修改成功！',
+                        message: '添加成功！',
                         duration: '1000'
                     })
+                    this.dialogVisible = false
+                    this.currentPage = 1
+                    this.getList()
                 } else if (res.code === 401) {
                     this.$store.dispatch('manuallyLoginOut')
                     this.$router.push({
@@ -173,7 +211,7 @@ export default {
                     })
                 } else {
                     this.$notify.error({
-                        message: res.msg || '修改失败！',
+                        message: res.msg || '添加失败！',
                         duration: '1000'
                     })
                 }
@@ -181,7 +219,7 @@ export default {
         },
         editCollege() {
             const data = {
-                id: this.id,
+                id: this.curCollege.id,
                 collegeName: this.form.name
             }
             this.$store.dispatch('updateCollege', data).then(res => {
@@ -190,6 +228,7 @@ export default {
                         message: '修改成功！',
                         duration: '1000'
                     })
+                    this.dialogVisible = false
                 } else if (res.code === 401) {
                     this.$store.dispatch('manuallyLoginOut')
                     this.$router.push({
@@ -205,6 +244,38 @@ export default {
                     })
                 }
             })
+        },
+        deleteCollege(item) {
+            this.$store
+                .dispatch('deleteCollege', {
+                    params: {
+                        collegeId: item.id
+                    }
+                })
+                .then(res => {
+                    if (res.code === 200) {
+                        this.$notify.success({
+                            message: '添加成功！',
+                            duration: '1000'
+                        })
+                        this.dialogVisible = false
+                        this.currentPage = 1
+                        this.getList()
+                    } else if (res.code === 401) {
+                        this.$store.dispatch('manuallyLoginOut')
+                        this.$router.push({
+                            path: '/login',
+                            query: {
+                                redirect: this.$route.path
+                            }
+                        })
+                    } else {
+                        this.$notify.error({
+                            message: res.msg || '添加失败！',
+                            duration: '1000'
+                        })
+                    }
+                })
         }
     },
     mounted() {
