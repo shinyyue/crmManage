@@ -41,7 +41,7 @@ const editCollege = (data) => {
 
 
 const editColumn = (data) => {
-    return Vue.axios.get(API_ROOT + 'crmColleController/queryOneColumn', data)
+    return Vue.axios.put(API_ROOT + '/crmColleController/updateColumn', data)
 }
 
 

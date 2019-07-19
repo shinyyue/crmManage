@@ -119,17 +119,8 @@ export default {
                 })
                     .then(() => {
                         this.deleteCollege(props.row)
-                        this.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        })
                     })
-                    .catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '已取消删除'
-                        })
-                    })
+                    .catch()
             }
         },
         getList() {
@@ -163,7 +154,8 @@ export default {
             this.$router.push({
                 path: '/column/list',
                 query: {
-                    id: props.row.id
+                    id: props.row.id,
+                    collegeName: props.row.collegeName
                 }
             })
         },
@@ -255,7 +247,7 @@ export default {
                 .then(res => {
                     if (res.code === 200) {
                         this.$notify.success({
-                            message: '添加成功！',
+                            message: '删除成功！',
                             duration: '1000'
                         })
                         this.dialogVisible = false
@@ -271,7 +263,7 @@ export default {
                         })
                     } else {
                         this.$notify.error({
-                            message: res.msg || '添加失败！',
+                            message: res.msg || '删除失败！',
                             duration: '1000'
                         })
                     }

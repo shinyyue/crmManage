@@ -1,5 +1,6 @@
 <template>
     <layout id="column_list">
+        <div style="padding: 10px;">所属学院：{{collegeName}}</div>
         <tableList @handleSizeChange="handleSizeChange"
                    @handleCurrentChange="handleCurrentChange"
                    @operateImg="jumpToDetails"
@@ -56,11 +57,11 @@ export default {
                     key: 'columnName',
                     align: 'center'
                 },
-                {
-                    displayName: '所属学院',
-                    key: 'collegeId',
-                    align: 'center'
-                },
+                // {
+                //     displayName: '所属学院',
+                //     key: 'collegeId',
+                //     align: 'center'
+                // },
                 {
                     displayName: '更新时间',
                     key: 'updateTime',
@@ -86,6 +87,9 @@ export default {
         },
         collegeId: function() {
             return this.$route.query.collegeId
+        },
+        collegeName: function() {
+            return this.$route.query.collegeName
         }
     },
 
@@ -170,13 +174,13 @@ export default {
             this.$router.push({
                 path: '/columncontent/list',
                 query: {
-                    id: props.row.id,
-                    collegeId: props.row.collegeId
+                    id: props.row.columnId,
+                    collegeId: props.row.collegeId,
+                    columnName: props.row.columnName
                 }
             })
         },
         updateColumn() {
-            console.log(2222, this.checkedColumn)
             if (!this.form.name) {
                 this.$notify.error({
                     message: '请填写栏目名称',
@@ -185,47 +189,41 @@ export default {
                 return
             }
             const data = {
-                collegeId: this.id,
-                columnId: this.checkedColumn.id,
+                collegeId: Number(this.id),
+                columnId: this.checkedColumn.columnId,
                 columnName: this.form.name
             }
-            this.$store
-                .dispatch('editColumn', {
-                    params: data
-                })
-                .then(res => {
-                    if (res.code === 200) {
-                        this.$notify.success({
-                            message: '修改成功！',
-                            duration: '1000'
-                        })
-                        this.dialogVisible = false
-                        this.currentPage = 1
-                        if (this.id) {
-                            this.getColumnListById()
-                        } else {
-                            this.getList()
-                        }
-                    } else if (res.code === 401) {
-                        this.$store.dispatch('manuallyLoginOut')
-                        this.$router.push({
-                            path: '/login',
-                            query: {
-                                redirect: this.$route.path
-                            }
-                        })
+            this.$store.dispatch('editColumn', data).then(res => {
+                if (res.code === 200) {
+                    this.$notify.success({
+                        message: '修改成功！',
+                        duration: '1000'
+                    })
+                    this.dialogVisible = false
+                    this.currentPage = 1
+                    if (this.id) {
+                        this.getColumnListById()
                     } else {
-                        this.$notify.error({
-                            message: res.msg || '修改失败！',
-                            duration: '1000'
-                        })
+                        this.getList()
                     }
-                })
+                } else if (res.code === 401) {
+                    this.$store.dispatch('manuallyLoginOut')
+                    this.$router.push({
+                        path: '/login',
+                        query: {
+                            redirect: this.$route.path
+                        }
+                    })
+                } else {
+                    this.$notify.error({
+                        message: res.msg || '修改失败！',
+                        duration: '1000'
+                    })
+                }
+            })
         }
     },
     mounted() {
-        console.log(2222, this.id)
-
         if (this.id) {
             this.getColumnListById()
         } else {

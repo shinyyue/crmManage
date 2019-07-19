@@ -1,6 +1,7 @@
 <template>
     <layout id="column_content_list">
-        <div style="text-align: right; padding: 10px;">
+        <div style="text-align: right; padding: 10px; display: flex; flex-direction: row; justify-content: space-between; ">
+            <span>所属栏目：{{columnName}}</span>
             <el-button type="primary"
                        @click="addColumnContent">添加栏目内容</el-button>
         </div>
@@ -17,6 +18,33 @@
                    :pageSize="currentPageSize"
                    ref="allPatientTable">
         </tableList>
+        <!-- <el-dialog :title="dialogTitle"
+                   :visible.sync="dialogVisible"
+                   width="30%"
+                   :before-close="handleClose">
+            <el-form ref="form"
+                     :model="form"
+                     label-width="80px">
+                <el-form-item label="标题"
+                              prop="title">
+                    <el-input v-model="form.title"></el-input>
+                </el-form-item>
+                <el-form-item label="内容"
+                              prop="content">
+                    <el-input v-model="form.content"></el-input>
+                </el-form-item>
+                <el-form-item label="栏目内容类型"
+                              prop="content">
+                    <el-input v-model="form.content"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer"
+                  class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary"
+                           @click="updateCollege()">确 定</el-button>
+            </span>
+        </el-dialog> -->
     </layout>
 </template>
 
@@ -59,20 +87,31 @@ export default {
                     operations: ['详情'],
                     width: 100
                 }
-            ]
+            ],
+            dialogVisible: false,
+            dialogTitle: '添加栏目内容',
+            form: {
+                title: '',
+                content: ''
+            }
         }
     },
     computed: {
         id: function() {
-            console.log(2222, this.$route.query)
-            return this.$route.query.id
+            return Number(this.$route.query.id)
         },
         collegeId: function() {
-            return this.$route.query.collegeId
+            return Number(this.$route.query.collegeId)
+        },
+        columnName: function() {
+            return this.$route.query.columnName
         }
     },
 
     methods: {
+        handleClose() {
+            this.dialogVisible = false
+        },
         getList() {
             const data = {
                 page: this.currentPage,
@@ -117,7 +156,8 @@ export default {
             this.$router.push({
                 path: '/columncontent/update',
                 query: {
-                    id: props.id
+                    columnId: props.id,
+                    collegeId: props.collegeId
                 }
             })
         },
