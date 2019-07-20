@@ -1,6 +1,6 @@
 <template>
     <layout id="column_content_update">
-        <div class="column-content-title">{{id ? '修改栏目' :'添加栏目'}</div>
+        <div class="column-content-title">{{id ? '修改栏目' :'添加栏目'}}</div>
         <el-form ref="form"
                  class="column-content"
                  label-width="120px">
@@ -204,9 +204,9 @@ export default {
             const data = {
                 title: this.title,
                 content:
-                    Number(this.contentType) !== 1 ?
-                        this.content :
-                        this.editorContent,
+                    Number(this.contentType) !== 1
+                        ? this.content
+                        : this.editorContent,
                 collegeId: this.collegeId,
                 id: this.columnId,
                 crmUserId: Number(localStorage.getItem('userId')),
