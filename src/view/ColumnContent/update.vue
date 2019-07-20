@@ -74,6 +74,7 @@
                     <el-button size="small"
                                type="primary">点击上传</el-button>
                 </el-upload>
+                <!-- <video :src="showImg"></video> -->
             </el-form-item>
             <el-form-item>
                 <el-button @click="$router.go(-1)">返 回</el-button>
@@ -100,13 +101,14 @@ export default {
             dialogImageUrl: '',
             fileUrl: '',
             editorContent: '',
-            imgList: [{ url: '' }]
+            imgList: [{ url: '' }],
+            editor: null
         }
     },
     computed: {
-        editor() {
-            return this.$refs.myTextEditor.quillEditor
-        },
+        // editor() {
+        //     return this.$refs.myTextEditor.quillEditor
+        // },
         id() {
             return Number(this.$route.query.id)
         },
@@ -170,12 +172,21 @@ export default {
             }
         },
         updateContent() {
+            if (!this.columnType) {
+                this.$notify.error({
+                    message: '请选择栏目内容类型'
+                })
+                return
+            }
             this.id ? this.editContent() : this.addContent()
         },
         addContent() {
             const data = {
                 title: this.title,
-                content: this.content,
+                content:
+                    Number(this.columnType) !== 1 ?
+                        this.content :
+                        this.editorContent,
                 collegeId: this.collegeId,
                 columnId: this.columnId,
                 columnType: this.columnType,
@@ -206,7 +217,7 @@ export default {
             const data = {
                 title: this.title,
                 content:
-                    Number(this.contentType) !== 1 ?
+                    Number(this.columnType) !== 1 ?
                         this.content :
                         this.editorContent,
                 collegeId: this.collegeId,
@@ -253,6 +264,7 @@ export default {
                     this.columnType = String(res.data.columnType)
                     this.title = res.data.title
                     this.content = res.data.content
+                    this.editor.txt.html(res.data.content)
                     // this.link = res.data.link
                     this.imgList[0].url = res.data.showImg
                     // this.fileUrl = res.data.showImg
@@ -265,12 +277,13 @@ export default {
         }
     },
     mounted() {
-        this.id && this.getDetails()
-        const editor = new E(this.$refs.editor)
-        editor.customConfig.onchange = html => {
+        this.editor = new E(this.$refs.editor)
+        this.editor.customConfig.onchange = html => {
+            console.log(1112, html)
             this.editorContent = html
         }
-        editor.create()
+        this.id && this.getDetails()
+        this.editor.create()
     }
 }
 </script>

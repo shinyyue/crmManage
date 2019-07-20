@@ -116,6 +116,9 @@ export default {
                                 'yyyy-MM-dd hh:mm:ss'
                             )
                             item.columnType = this.format(item.columnType)
+                            item.content =
+                                item.content.substring(0, 30) +
+                                (item.content.length > 30 ? '...' : '')
                         })
                     this.list = (res.data && res.data.items) || []
                     this.totalNum = (res.data && res.data.total) || 0
