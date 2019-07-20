@@ -204,9 +204,9 @@ export default {
             const data = {
                 title: this.title,
                 content:
-                    Number(this.contentType) !== 1
-                        ? this.content
-                        : this.editorContent,
+                    Number(this.contentType) !== 1 ?
+                        this.content :
+                        this.editorContent,
                 collegeId: this.collegeId,
                 id: this.columnId,
                 crmUserId: Number(localStorage.getItem('userId')),
