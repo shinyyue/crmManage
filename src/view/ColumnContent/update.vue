@@ -34,14 +34,15 @@
                            list-type="picture-card"
                            :limit="1"
                            :data="{type: 2}"
-                           :file-list="[{url: fileUrl}]"
+                           :file-list="imgList"
                            :on-preview="handlePictureCardPreview"
                            :on-remove="handleRemove"
                            :on-success="uploadImgDone"
                            :with-credentials="true">
                     <i class="el-icon-plus"></i>
                 </el-upload>
-                <el-dialog :visible.sync="dialogVisible">
+                <el-dialog title="查看大图"
+                           :visible.sync="dialogVisible">
                     <img width="100%"
                          :src="dialogImageUrl"
                          alt="">
@@ -98,7 +99,8 @@ export default {
             dialogVisible: false,
             dialogImageUrl: '',
             fileUrl: '',
-            editorContent: ''
+            editorContent: '',
+            imgList: [{ url: '' }]
         }
     },
     computed: {
@@ -208,7 +210,7 @@ export default {
                         this.content :
                         this.editorContent,
                 collegeId: this.collegeId,
-                id: this.columnId,
+                id: this.id,
                 crmUserId: Number(localStorage.getItem('userId')),
                 showImg: this.fileUrl
             }
@@ -252,7 +254,8 @@ export default {
                     this.title = res.data.title
                     this.content = res.data.content
                     // this.link = res.data.link
-                    this.fileUrl = res.data.showImg
+                    this.imgList[0].url = res.data.showImg
+                    // this.fileUrl = res.data.showImg
                 } else {
                     this.$notify.error({
                         message: res.msg || '修改栏目内容失败'

@@ -90,7 +90,7 @@ export default {
                                 res.data.vsMpUser.userName
                             )
                             this.$router.push({
-                                path: '/column/list'
+                                path: '/college/list'
                             })
                         } else {
                             this.$notify.error({

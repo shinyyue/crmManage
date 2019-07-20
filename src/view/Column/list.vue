@@ -57,11 +57,11 @@ export default {
                     key: 'columnName',
                     align: 'center'
                 },
-                // {
-                //     displayName: '所属学院',
-                //     key: 'collegeId',
-                //     align: 'center'
-                // },
+                {
+                    displayName: '所属学院',
+                    key: 'collegeId',
+                    align: 'center'
+                },
                 {
                     displayName: '更新时间',
                     key: 'updateTime',
@@ -84,9 +84,6 @@ export default {
     computed: {
         id: function() {
             return this.$route.query.id
-        },
-        collegeId: function() {
-            return this.$route.query.collegeId
         },
         collegeName: function() {
             return this.$route.query.collegeName
@@ -125,7 +122,7 @@ export default {
             const data = {
                 page: this.currentPage,
                 rows: this.currentPageSize,
-                key: this.id
+                key: this.id || 0
             }
             this.$store.dispatch('getColumnListById', data).then(res => {
                 if (res.code === 401) {
@@ -174,7 +171,7 @@ export default {
             this.$router.push({
                 path: '/columncontent/list',
                 query: {
-                    id: props.row.columnId,
+                    id: props.row.id,
                     collegeId: props.row.collegeId,
                     columnName: props.row.columnName
                 }
@@ -189,8 +186,8 @@ export default {
                 return
             }
             const data = {
-                collegeId: Number(this.id),
-                columnId: this.checkedColumn.columnId,
+                collegeId: Number(this.id) || 0,
+                columnId: this.checkedColumn.id,
                 columnName: this.form.name
             }
             this.$store.dispatch('editColumn', data).then(res => {
@@ -224,6 +221,7 @@ export default {
         }
     },
     mounted() {
+        // this.getColumnListById()
         if (this.id) {
             this.getColumnListById()
         } else {
