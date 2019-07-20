@@ -152,14 +152,56 @@ const actions = {
         })
     },
 
+    addColumnContent({
+        commit
+    }, data) {
+        return new Promise((resolve, reject) => {
+            service
+                .addColumnContent(data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    editColumnContent({
+        commit
+    }, data) {
+        return new Promise((resolve, reject) => {
+            service
+                .editColumnContent(data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    getColumnContentDetails({
+        commit
+    }, data) {
+        return new Promise((resolve, reject) => {
+            service
+                .getColumnContentDetails(data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
     getMenus({
         commit
     }, data) {
         return new Promise((resolve, reject) => {
             const a = [{
-                displayName: '栏目列表',
-                key: 'column'
-            }, {
                 displayName: '学院列表',
                 key: 'college'
             }]

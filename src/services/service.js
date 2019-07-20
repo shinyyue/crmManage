@@ -41,7 +41,19 @@ const editCollege = (data) => {
 
 
 const editColumn = (data) => {
-    return Vue.axios.put(API_ROOT + '/crmColleController/updateColumn', data)
+    return Vue.axios.put(API_ROOT + 'crmColleController/updateColumn', data)
+}
+
+const addColumnContent = (data) => {
+    return Vue.axios.post(API_ROOT + 'columnContent/add', data)
+}
+
+const editColumnContent = (data) => {
+    return Vue.axios.put(API_ROOT + 'columnContent/update', data)
+}
+
+const getColumnContentDetails = (data) => {
+    return Vue.axios.post(API_ROOT + 'columnContent/queryOne', data)
 }
 
 
@@ -60,5 +72,8 @@ export default {
     addCollege,
     deleteCollege,
     editCollege,
-    editColumn
+    editColumn,
+    addColumnContent,
+    editColumnContent,
+    getColumnContentDetails
 }

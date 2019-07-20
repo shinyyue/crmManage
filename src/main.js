@@ -52,6 +52,10 @@ import store from './vuex/store'
 import Layout from './view/Layout'
 import TimeFormat from './utilities/timeFormat'
 import TableList from './components/tableList'
+import VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 
 Vue.use(Collapse)
 Vue.use(CollapseItem)
@@ -87,6 +91,7 @@ Vue.use(CheckboxButton)
 Vue.use(CheckboxGroup)
 Vue.use(Tag)
 Vue.use(Alert)
+Vue.use(VueQuillEditor)
 
 Vue.prototype.$msgbox = MessageBox
 Vue.prototype.$notify = Notification

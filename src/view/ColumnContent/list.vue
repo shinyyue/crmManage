@@ -18,33 +18,6 @@
                    :pageSize="currentPageSize"
                    ref="allPatientTable">
         </tableList>
-        <!-- <el-dialog :title="dialogTitle"
-                   :visible.sync="dialogVisible"
-                   width="30%"
-                   :before-close="handleClose">
-            <el-form ref="form"
-                     :model="form"
-                     label-width="80px">
-                <el-form-item label="标题"
-                              prop="title">
-                    <el-input v-model="form.title"></el-input>
-                </el-form-item>
-                <el-form-item label="内容"
-                              prop="content">
-                    <el-input v-model="form.content"></el-input>
-                </el-form-item>
-                <el-form-item label="栏目内容类型"
-                              prop="content">
-                    <el-input v-model="form.content"></el-input>
-                </el-form-item>
-            </el-form>
-            <span slot="footer"
-                  class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary"
-                           @click="updateCollege()">确 定</el-button>
-            </span>
-        </el-dialog> -->
     </layout>
 </template>
 
@@ -59,25 +32,31 @@ export default {
             currentPage: 1,
             colNameMap: [
                 {
-                    displayName: '栏目ID',
+                    displayName: '内容ID',
                     key: 'id',
                     width: '80px',
                     align: 'center'
                 },
                 {
-                    displayName: '栏目名称',
-                    key: 'columnName',
+                    displayName: '内容标题',
+                    key: 'title',
                     align: 'center'
                 },
                 {
-                    displayName: '所属学院',
-                    key: 'collegeId',
+                    displayName: '栏目内容',
+                    key: 'content',
                     align: 'center'
                 },
                 {
-                    displayName: '更新时间',
-                    key: 'updateTime',
+                    displayName: '栏目类型',
+                    key: 'columnType',
                     align: 'center'
+                },
+                {
+                    displayName: '展示图',
+                    key: 'showImg',
+                    align: 'center',
+                    type: 'image'
                 },
                 {
                     displayName: '操作',
@@ -96,6 +75,7 @@ export default {
             }
         }
     },
+
     computed: {
         id: function() {
             return Number(this.$route.query.id)
@@ -135,11 +115,30 @@ export default {
                             item.updateTime = new Date(item.updateTime).format(
                                 'yyyy-MM-dd hh:mm:ss'
                             )
+                            item.columnType = this.format(item.columnType)
                         })
                     this.list = (res.data && res.data.items) || []
                     this.totalNum = (res.data && res.data.total) || 0
                 }
             })
+        },
+        format(type) {
+            let str = ''
+            switch (Number(type)) {
+            case 1:
+                str = '文章'
+                break
+            case 2:
+                str = '图片'
+                break
+            case 3:
+                str = '视频'
+                break
+            default:
+                str = ''
+                break
+            }
+            return str
         },
         handleSizeChange() {},
         handleCurrentChange(page) {
@@ -147,21 +146,29 @@ export default {
             this.getList()
         },
         operateClick(props, item) {
-            console.log(111, item, props.column.label)
-            // if (item === '详情') {
-            //     this.jumpToDetails(props)
-            // }
+            if (item === '详情') {
+                this.jumpToDetails(props.row)
+            }
         },
-        addColumnContent(props) {
+        addColumnContent() {
             this.$router.push({
                 path: '/columncontent/update',
                 query: {
-                    columnId: props.id,
-                    collegeId: props.collegeId
+                    columnId: this.id,
+                    collegeId: this.collegeId
                 }
             })
         },
-        jumpToDetails() {}
+        jumpToDetails(data) {
+            this.$router.push({
+                path: '/columncontent/update',
+                query: {
+                    columnId: data.columnId,
+                    collegeId: data.collegeId,
+                    id: data.id
+                }
+            })
+        }
     },
     mounted() {
         this.getList()
