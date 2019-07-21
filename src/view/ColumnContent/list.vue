@@ -128,18 +128,18 @@ export default {
         format(type) {
             let str = ''
             switch (Number(type)) {
-                case 1:
-                    str = '文章'
-                    break
-                case 2:
-                    str = '图片'
-                    break
-                case 3:
-                    str = '视频'
-                    break
-                default:
-                    str = ''
-                    break
+            case 1:
+                str = '文章'
+                break
+            case 2:
+                str = '图片'
+                break
+            case 3:
+                str = '视频'
+                break
+            default:
+                str = ''
+                break
             }
             return str
         },
