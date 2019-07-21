@@ -28,9 +28,8 @@
                 <el-input v-model="content"></el-input>
             </el-form-item>
 
-            <el-form-item label="上传图片"
-                          v-show="columnType == 2">
-                <el-upload action="http://39.104.97.6:8080/dataBank/oneFileUpload/"
+            <el-form-item label="上传图片">
+                <el-upload action="http://39.104.97.6:8080/dataBank/oneFileUpload"
                            list-type="picture-card"
                            :limit="1"
                            :data="{type: 2}"
@@ -63,7 +62,7 @@
                           prop="columnType"
                           v-show="columnType == 3">
                 <el-upload class="upload-demo"
-                           action="http://39.104.97.6:8080/dataBank/oneFileUpload/"
+                           action="http://39.104.97.6:8080/dataBank/oneFileUpload"
                            :on-remove="handleRemove"
                            :before-upload="beforeUpload"
                            :on-success="uploadVideoDone"
@@ -101,8 +100,28 @@ export default {
             dialogImageUrl: '',
             fileUrl: '',
             editorContent: '',
-            imgList: [{ url: '' }],
-            editor: null
+            imgList: [],
+            editor: null,
+            customConfig: [
+                'head', // 标题
+                'bold', // 粗体
+                'fontSize', // 字号
+                'fontName', // 字体
+                'italic', // 斜体
+                'underline', // 下划线
+                'strikeThrough', // 删除线
+                'foreColor', // 文字颜色
+                'backColor', // 背景颜色
+                'link', // 插入链接
+                'list', // 列表
+                'justify', // 对齐方式
+                'quote', // 引用
+                'image', // 插入图片
+                'table', // 表格
+                'video', // 插入视频
+                'undo', // 撤销
+                'redo' // 重复
+            ]
         }
     },
     computed: {
@@ -220,6 +239,7 @@ export default {
                     Number(this.columnType) !== 1 ?
                         this.content :
                         this.editorContent,
+                columnType: Number(this.columnType),
                 collegeId: this.collegeId,
                 id: this.id,
                 crmUserId: Number(localStorage.getItem('userId')),
@@ -266,7 +286,7 @@ export default {
                     this.content = res.data.content
                     this.editor.txt.html(res.data.content)
                     // this.link = res.data.link
-                    this.imgList[0].url = res.data.showImg
+                    this.imgList = [{ url: res.data.showImg }]
                     // this.fileUrl = res.data.showImg
                 } else {
                     this.$notify.error({
@@ -279,10 +299,37 @@ export default {
     mounted() {
         this.editor = new E(this.$refs.editor)
         this.editor.customConfig.onchange = html => {
-            console.log(1112, html)
             this.editorContent = html
         }
         this.id && this.getDetails()
+        this.editor.customConfig.showLinkImg = false
+        this.editor.customConfig.uploadImgServer =
+            'http://39.104.97.6:8080/dataBank/oneFileUpload'
+        this.editor.customConfig.withCredentials = true
+        this.editor.customConfig.uploadImgParams = {
+            type: 2
+        }
+        this.editor.customConfig.uploadFileName = 'file'
+        this.editor.customConfig.uploadImgHooks = {
+            customInsert: function(insertImg, res, editor) {
+                if (res.code === 401) {
+                    this.$store.dispatch('manuallyLoginOut')
+                    this.$router.push({
+                        path: '/login',
+                        query: {
+                            redirect: this.$route.path
+                        }
+                    })
+                } else if (res.code === 200) {
+                    const url = 'http://39.104.97.6:8001/' + res.data
+                    insertImg(url)
+                } else {
+                    this.$notify.error({
+                        message: res.msg || '上传失败'
+                    })
+                }
+            }
+        }
         this.editor.create()
     }
 }

@@ -13,9 +13,9 @@
                 <i class="el-icon-home"></i>
                 <span class="menu-text">学院列表</span>
             </el-menu-item>
-            <el-menu-item index="/column/list"
+            <el-menu-item index="/column/schoollist"
                           class="submenu-item"
-                          :class="{'active': currentRoute === '/column/list'}">
+                          :class="{'active': currentRoute === '/column/schoollist'}">
                 <i class="el-icon-home"></i>
                 <span class="menu-text">学校栏目列表</span>
             </el-menu-item>

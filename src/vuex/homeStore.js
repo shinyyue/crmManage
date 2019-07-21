@@ -167,6 +167,22 @@ const actions = {
         })
     },
 
+    delColumnContent({
+        commit
+    }, data) {
+        return new Promise((resolve, reject) => {
+            service
+                .delColumnContent(data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+
     editColumnContent({
         commit
     }, data) {

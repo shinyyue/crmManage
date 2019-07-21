@@ -146,6 +146,7 @@ Vue.axios.interceptors.response.use((res) => {
     } else if (err && err.message === 'Network Error') {
         return Promise.reject(err)
     } else {
+
         return Promise.reject(err)
     }
 })

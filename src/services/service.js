@@ -8,7 +8,7 @@ const loginIn = (data) => {
 }
 
 const getColumnList = (data) => {
-    return Vue.axios.post(API_ROOT + 'column/columnList', data)
+    return Vue.axios.post(API_ROOT + 'crmColleController/querySchoolColumnList', data)
 }
 
 const getColumnContentList = (data) => {
@@ -48,6 +48,9 @@ const addColumnContent = (data) => {
     return Vue.axios.post(API_ROOT + 'columnContent/add', data)
 }
 
+const delColumnContent = (data) => {
+    return Vue.axios.delete(API_ROOT + 'columnContent/del', data)
+}
 const editColumnContent = (data) => {
     return Vue.axios.put(API_ROOT + 'columnContent/update', data)
 }
@@ -75,5 +78,6 @@ export default {
     editColumn,
     addColumnContent,
     editColumnContent,
-    getColumnContentDetails
+    getColumnContentDetails,
+    delColumnContent
 }

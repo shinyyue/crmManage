@@ -63,7 +63,7 @@ export default {
                     align: 'center',
                     fixed: 'right',
                     type: 'operation',
-                    operations: ['详情'],
+                    operations: ['修改', '删除'],
                     width: 100
                 }
             ],
@@ -128,18 +128,18 @@ export default {
         format(type) {
             let str = ''
             switch (Number(type)) {
-            case 1:
-                str = '文章'
-                break
-            case 2:
-                str = '图片'
-                break
-            case 3:
-                str = '视频'
-                break
-            default:
-                str = ''
-                break
+                case 1:
+                    str = '文章'
+                    break
+                case 2:
+                    str = '图片'
+                    break
+                case 3:
+                    str = '视频'
+                    break
+                default:
+                    str = ''
+                    break
             }
             return str
         },
@@ -149,9 +149,43 @@ export default {
             this.getList()
         },
         operateClick(props, item) {
-            if (item === '详情') {
+            if (item === '修改') {
                 this.jumpToDetails(props.row)
+            } else if (item === '删除') {
+                this.$confirm('是否删除该栏目内容?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                })
+                    .then(() => {
+                        this.deleteContent(props.row.id)
+                    })
+                    .catch()
             }
+        },
+        deleteContent(id) {
+            this.$store
+                .dispatch('delColumnContent', {
+                    params: {
+                        id
+                    }
+                })
+                .then(res => {
+                    if (res.code === 401) {
+                        this.$store.dispatch('manuallyLoginOut')
+                        this.$router.push({
+                            path: '/login',
+                            query: {
+                                redirect: this.$route.path
+                            }
+                        })
+                    } else if (res.code === 200) {
+                        this.$notify.success({
+                            message: '删除成功'
+                        })
+                        this.getList()
+                    }
+                })
         },
         addColumnContent() {
             this.$router.push({

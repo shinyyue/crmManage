@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 const Login = (resolve) => require(['@/view/Login'], resolve)
 const ColumnList = (resolve) => require(['@/view/Column/list'], resolve)
+const ColumnSchoolList = (resolve) => require(['@/view/Column/schoolList'], resolve)
 const ColumnContentList = (resolve) => require(['@/view/ColumnContent/list'], resolve)
 const ColumnContentUpdate = (resolve) => require(['@/view/ColumnContent/update'], resolve)
 const CollegeList = (resolve) => require(['@/view/College/list'], resolve)
@@ -21,32 +22,22 @@ export default new Router({
         path: '/column/list',
         name: 'columnList',
         component: ColumnList
-        // meta: {
-        //     requiresAuth: true
-        // }
+    }, {
+        path: '/column/schoollist',
+        name: 'columnSchoolList',
+        component: ColumnSchoolList
+
     }, {
         path: '/columncontent/list',
         name: 'columnContentList',
         component: ColumnContentList
-        // meta: {
-        //     requiresAuth: true
-        // }
     }, {
         path: '/columncontent/update',
         name: 'columnContentUpdate',
         component: ColumnContentUpdate
-        // meta: {
-        //     requiresAuth: true
-        // }
     }, {
         path: '/college/list',
         name: 'collegeList',
         component: CollegeList
-    }
-        // , {
-        //     path: '/college/update',
-        //     name: 'collegeUpdate',
-        //     component: CollegeUpdate
-        // }
-    ]
+    }]
 })
