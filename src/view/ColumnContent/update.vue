@@ -75,6 +75,10 @@
                 </el-upload>
                 <!-- <video :src="showImg"></video> -->
             </el-form-item>
+            <el-form-item label="链接"
+                          prop="content">
+                <el-input v-model="linkUrl"></el-input>
+            </el-form-item>
             <el-form-item>
                 <el-button @click="$router.go(-1)">返 回</el-button>
                 <el-button type="primary"
@@ -98,7 +102,9 @@ export default {
             disabled: false,
             dialogVisible: false,
             dialogImageUrl: '',
-            fileUrl: '',
+            // fileUrl: '',
+            imgUrl: '',
+            videoUrl: '',
             editorContent: '',
             imgList: [],
             editor: null,
@@ -121,7 +127,8 @@ export default {
                 'video', // 插入视频
                 'undo', // 撤销
                 'redo' // 重复
-            ]
+            ],
+            linkUrl: ''
         }
     },
     computed: {
@@ -166,7 +173,7 @@ export default {
                     }
                 })
             } else if (res.code === 200) {
-                this.fileUrl = 'http://39.104.97.6:8001/' + res.data
+                this.imgUrl = 'http://39.104.97.6:8001/' + res.data
             } else {
                 this.$notify.error({
                     message: res.msg || '上传图片失败'
@@ -183,7 +190,7 @@ export default {
                     }
                 })
             } else if (res.code === 200) {
-                this.fileUrl = 'http://39.104.97.6:8001/' + res.data
+                this.videoUrl = 'http://39.104.97.6:8001/' + res.data
             } else {
                 this.$notify.error({
                     message: res.msg || '上传图片失败'
@@ -209,7 +216,9 @@ export default {
                 collegeId: this.collegeId,
                 columnId: this.columnId,
                 columnType: this.columnType,
-                showImg: this.fileUrl
+                showImg: this.imgUrl,
+                videoUrl: this.videoUrl,
+                linkUrl: this.linkUrl
             }
             this.$store.dispatch('addColumnContent', data).then(res => {
                 if (res.code === 401) {
@@ -243,7 +252,9 @@ export default {
                 collegeId: this.collegeId,
                 id: this.id,
                 crmUserId: Number(localStorage.getItem('userId')),
-                showImg: this.fileUrl
+                showImg: this.imgUrl,
+                videoUrl: this.videoUrl,
+                linkUrl: this.linkUrl
             }
             this.$store.dispatch('editColumnContent', data).then(res => {
                 if (res.code === 401) {
@@ -268,32 +279,36 @@ export default {
         },
         getDetails() {
             const data = {
-                columnId: this.columnId,
-                collegeId: this.collegeId
+                id: this.id
+                // collegeId: this.collegeId
             }
-            this.$store.dispatch('getColumnContentDetails', data).then(res => {
-                if (res.code === 401) {
-                    this.$store.dispatch('manuallyLoginOut')
-                    this.$router.push({
-                        path: '/login',
-                        query: {
-                            redirect: this.$route.path
-                        }
-                    })
-                } else if (res.code === 200) {
-                    this.columnType = String(res.data.columnType)
-                    this.title = res.data.title
-                    this.content = res.data.content
-                    this.editor.txt.html(res.data.content)
-                    // this.link = res.data.link
-                    this.imgList = [{ url: res.data.showImg }]
-                    // this.fileUrl = res.data.showImg
-                } else {
-                    this.$notify.error({
-                        message: res.msg || '修改栏目内容失败'
-                    })
-                }
-            })
+            this.$store
+                .dispatch('getColumnContentDetails', {
+                    params: data
+                })
+                .then(res => {
+                    if (res.code === 401) {
+                        this.$store.dispatch('manuallyLoginOut')
+                        this.$router.push({
+                            path: '/login',
+                            query: {
+                                redirect: this.$route.path
+                            }
+                        })
+                    } else if (res.code === 200) {
+                        this.columnType = String(res.data.columnType)
+                        this.title = res.data.title
+                        this.content = res.data.content
+                        this.editor.txt.html(res.data.content)
+                        this.linkUrl = res.data.linkUrl
+                        this.videoUrl = res.data.videoUrl
+                        this.imgList = [{ url: res.data.showImg }]
+                    } else {
+                        this.$notify.error({
+                            message: res.msg || '修改栏目内容失败'
+                        })
+                    }
+                })
         }
     },
     mounted() {

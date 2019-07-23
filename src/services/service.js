@@ -56,7 +56,8 @@ const editColumnContent = (data) => {
 }
 
 const getColumnContentDetails = (data) => {
-    return Vue.axios.post(API_ROOT + 'columnContent/queryOne', data)
+    // return Vue.axios.post(API_ROOT + 'columnContent/queryOne', data)
+    return Vue.axios.get(API_ROOT + 'columnContent/queryContentById', data)
 }
 
 

@@ -58,11 +58,11 @@ export default {
                     key: 'columnName',
                     align: 'center'
                 },
-                {
-                    displayName: '所属学院',
-                    key: 'collegeId',
-                    align: 'center'
-                },
+                // {
+                //     displayName: '所属学院',
+                //     key: 'collegeId',
+                //     align: 'center'
+                // },
                 {
                     displayName: '更新时间',
                     key: 'updateTime',
