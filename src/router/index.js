@@ -13,7 +13,7 @@ export default new Router({
     mode: 'history',
     routes: [{
         path: '*',
-        redirect: '/column/list'
+        redirect: '/column/schoollist'
     }, {
         path: '/login',
         name: 'Login',

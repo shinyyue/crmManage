@@ -49,7 +49,7 @@ export default {
             colNameMap: [
                 {
                     displayName: '栏目ID',
-                    key: 'id',
+                    key: 'columnId',
                     width: '80px',
                     align: 'center'
                 },
@@ -172,7 +172,7 @@ export default {
             this.$router.push({
                 path: '/columncontent/list',
                 query: {
-                    id: props.row.id,
+                    id: props.row.columnId,
                     collegeId: props.row.collegeId,
                     columnName: props.row.columnName
                 }
