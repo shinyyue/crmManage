@@ -19,6 +19,12 @@
                 <i class="el-icon-home"></i>
                 <span class="menu-text">学校栏目列表</span>
             </el-menu-item>
+            <el-menu-item index="/examin/list"
+                          class="submenu-item"
+                          :class="{'active': currentRoute === '/examin/list'}">
+                <i class="el-icon-home"></i>
+                <span class="menu-text">申报实验列表</span>
+            </el-menu-item>
         </el-menu>
     </div>
 </template>

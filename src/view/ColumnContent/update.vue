@@ -210,9 +210,9 @@ export default {
             const data = {
                 title: this.title,
                 content:
-                    Number(this.columnType) !== 1 ?
-                        this.content :
-                        this.editorContent,
+                    Number(this.columnType) !== 1
+                        ? this.content
+                        : this.editorContent,
                 collegeId: this.collegeId,
                 columnId: this.columnId,
                 columnType: this.columnType,
@@ -245,9 +245,9 @@ export default {
             const data = {
                 title: this.title,
                 content:
-                    Number(this.columnType) !== 1 ?
-                        this.content :
-                        this.editorContent,
+                    Number(this.columnType) !== 1
+                        ? this.content
+                        : this.editorContent,
                 columnType: Number(this.columnType),
                 collegeId: this.collegeId,
                 id: this.id,

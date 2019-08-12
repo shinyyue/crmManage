@@ -6,6 +6,8 @@ const ColumnSchoolList = (resolve) => require(['@/view/Column/schoolList'], reso
 const ColumnContentList = (resolve) => require(['@/view/ColumnContent/list'], resolve)
 const ColumnContentUpdate = (resolve) => require(['@/view/ColumnContent/update'], resolve)
 const CollegeList = (resolve) => require(['@/view/College/list'], resolve)
+const ExaminList = (resolve) => require(['@/view/Examin/list'], resolve)
+const ExaminUpdate = (resolve) => require(['@/view/Examin/update'], resolve)
 // const CollegeUpdate = (resolve) => require(['@/view/College/update'], resolve)
 Vue.use(Router)
 
@@ -39,5 +41,13 @@ export default new Router({
         path: '/college/list',
         name: 'collegeList',
         component: CollegeList
+    }, {
+        path: '/examin/list',
+        name: 'examinList',
+        component: ExaminList
+    }, {
+        path: '/examin/update',
+        name: 'examinUpdate',
+        component: ExaminUpdate
     }]
 })

@@ -108,6 +108,9 @@ Vue.config.productionTip = false
 Vue.component(Layout.name, Layout)
 Vue.component(TableList.name, TableList)
 
+Vue.prototype.API_ROOT = (process.env.NODE_ENV === 'production') ?
+    'http://39.104.97.6:8080/' : 'http://39.104.97.6:8080/'
+
 // 路由拦截
 router.beforeEach((to, from, next) => {
     // const user = localStorage.getItem('userId') && localStorage.getItem('userId') !== 'undefined' && JSON.parse(localStorage.getItem('userId'))
