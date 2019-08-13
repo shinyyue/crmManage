@@ -47,6 +47,14 @@ export default {
                     key: 'imgUrl',
                     align: 'center',
                     type: 'image'
+                },
+                {
+                    displayName: '操作',
+                    align: 'center',
+                    fixed: 'right',
+                    type: 'operation',
+                    operations: ['修改', '删除'],
+                    width: 100
                 }
             ]
         }
@@ -54,7 +62,10 @@ export default {
     methods: {
         getList() {
             vue.axios
-                .post(this.API_ROOT + 'reportExperoment/queryReportExpList', {})
+                .post(this.API_ROOT + 'reportExperoment/queryReportExpList', {
+                    page: 1,
+                    rows: 10
+                })
                 .then(res => {
                     if (res.code === 401) {
                         this.$store.dispatch('manuallyLoginOut')
@@ -69,24 +80,6 @@ export default {
                         this.totalNum = (res.data && res.data.total) || 0
                     }
                 })
-        },
-        format(type) {
-            let str = ''
-            switch (Number(type)) {
-                case 1:
-                    str = '文章'
-                    break
-                case 2:
-                    str = '图片'
-                    break
-                case 3:
-                    str = '视频'
-                    break
-                default:
-                    str = ''
-                    break
-            }
-            return str
         },
         handleSizeChange() {},
         handleCurrentChange(page) {
@@ -143,9 +136,14 @@ export default {
         },
         addExamin(data) {
             this.$router.push({
+                path: '/examin/update'
+            })
+        },
+        jumpToDetails(data) {
+            this.$router.push({
                 path: '/examin/update',
                 query: {
-                    //   id: data.id
+                    id: data.id
                 }
             })
         }
