@@ -47,6 +47,14 @@ export default {
                     key: 'imgUrl',
                     align: 'center',
                     type: 'image'
+                },
+                {
+                    displayName: '操作',
+                    align: 'center',
+                    fixed: 'right',
+                    type: 'operation',
+                    operations: ['修改', '删除'],
+                    width: 200
                 }
             ]
         }
@@ -54,7 +62,10 @@ export default {
     methods: {
         getList() {
             vue.axios
-                .post(this.API_ROOT + 'reportExperoment/queryReportExpList', {})
+                .post(this.API_ROOT + 'reportExperoment/queryReportExpList', {
+                    page: 1,
+                    rows: 20
+                })
                 .then(res => {
                     if (res.code === 401) {
                         this.$store.dispatch('manuallyLoginOut')
@@ -70,24 +81,6 @@ export default {
                     }
                 })
         },
-        format(type) {
-            let str = ''
-            switch (Number(type)) {
-                case 1:
-                    str = '文章'
-                    break
-                case 2:
-                    str = '图片'
-                    break
-                case 3:
-                    str = '视频'
-                    break
-                default:
-                    str = ''
-                    break
-            }
-            return str
-        },
         handleSizeChange() {},
         handleCurrentChange(page) {
             this.currentPage = page
@@ -95,7 +88,7 @@ export default {
         },
         operateClick(props, item) {
             if (item === '修改') {
-                this.jumpToDetails(props.row)
+                this.jumpToDetails(props.row.id)
             } else if (item === '删除') {
                 this.$confirm('是否删除该栏目内容?', '提示', {
                     confirmButtonText: '确定',
@@ -109,12 +102,7 @@ export default {
             }
         },
         deleteContent(id) {
-            this.$store
-                .dispatch('delColumnContent', {
-                    params: {
-                        id
-                    }
-                })
+            vue.axios.delete('reportExperoment/deleteReportExp?id='+id)
                 .then(res => {
                     if (res.code === 401) {
                         this.$store.dispatch('manuallyLoginOut')
@@ -132,20 +120,16 @@ export default {
                     }
                 })
         },
-        addColumnContent() {
+        addExamin(data) {
             this.$router.push({
-                path: '/columncontent/update',
-                query: {
-                    columnId: this.id,
-                    collegeId: this.collegeId
-                }
+                path: '/examin/update'
             })
         },
-        addExamin(data) {
+        jumpToDetails(data) {
             this.$router.push({
                 path: '/examin/update',
                 query: {
-                    //   id: data.id
+                      id: data.id
                 }
             })
         }
