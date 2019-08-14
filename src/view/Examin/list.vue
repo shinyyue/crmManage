@@ -6,7 +6,6 @@
         </div>
         <tableList @handleSizeChange="handleSizeChange"
                    @handleCurrentChange="handleCurrentChange"
-                   @operateImg="jumpToDetails"
                    @operateClick="operateClick"
                    :loading="loading"
                    :tableData="list"
@@ -54,7 +53,7 @@ export default {
                     fixed: 'right',
                     type: 'operation',
                     operations: ['修改', '删除'],
-                    width: 200
+                    width: 100
                 }
             ]
         }
@@ -125,11 +124,11 @@ export default {
                 path: '/examin/update'
             })
         },
-        jumpToDetails(data) {
+        jumpToDetails(id) {
             this.$router.push({
                 path: '/examin/update',
                 query: {
-                      id: data.id
+                    id
                 }
             })
         }
