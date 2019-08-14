@@ -63,31 +63,31 @@
                 </el-upload>
             </el-form-item>
             <el-form-item label="项目团队">
-                <div>
+                <div class="editor-item">
                     <div ref="editorTeam"
                          style="text-align:left"></div>
                 </div>
             </el-form-item>
             <el-form-item label="网络要求">
-                <div>
+                <div class="editor-item">
                     <div ref="editorRequire"
                          style="text-align:left"></div>
                 </div>
             </el-form-item>
             <el-form-item label="技术架构">
-                <div>
+                <div class="editor-item">
                     <div ref="editorStructure"
                          style="text-align:left"></div>
                 </div>
             </el-form-item>
             <el-form-item label="项目特色">
-                <div>
+                <div class="editor-item">
                     <div ref="editorFeature"
                          style="text-align:left"></div>
                 </div>
             </el-form-item>
             <el-form-item label="服务计划">
-                <div>
+                <div class="editor-item">
                     <div ref="editorService"
                          style="text-align:left"></div>
                 </div>
@@ -736,7 +736,16 @@ export default {
 </script>
 
 <style lang="less">
-.el-dialog__title{
-    color: #fff;
+#examin_update {
+    .el-dialog__title{
+        color: #fff;
+    }
+    .editor-item{
+        background: #fff;
+    }
+    .el-form-item__label {
+        color: #333;
+    }
 }
+
 </style>
