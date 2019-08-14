@@ -101,7 +101,7 @@ export default {
             }
         },
         deleteContent(id) {
-            vue.axios.delete('reportExperoment/deleteReportExp?id='+id)
+            vue.axios.delete(this.API_ROOT + 'reportExperoment/deleteReportExp?id='+id)
                 .then(res => {
                     if (res.code === 401) {
                         this.$store.dispatch('manuallyLoginOut')
@@ -140,4 +140,11 @@ export default {
 </script>
 
 <style lang="less">
+#examin-list {
+    .table-list .table-content-img{
+        width: 100px;
+        height: 100px;
+    }
+}
+
 </style>

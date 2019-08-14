@@ -299,6 +299,7 @@ export default {
                         this.columnType = String(res.data.columnType)
                         this.title = res.data.title
                         this.content = res.data.content
+                        console.log(222, this.editor)
                         this.editor.txt.html(res.data.content)
                         this.linkUrl = res.data.linkUrl
                         this.videoUrl = res.data.videoUrl

@@ -13,15 +13,13 @@
                 <el-input v-model="expIntroduct"></el-input>
             </el-form-item>
             <el-form-item label="实验图片">
+                <img style="width: auto; height: 148px;" :src="imgUrl" v-show="imgUrl">
                 <el-upload action="http://39.104.97.6:8080/reportExperoment/fileUpload"
-                           list-type="picture-card"
-                           :limit="1"
-                           :file-list="imgList"
                            :on-preview="handlePictureCardPreview"
                            :on-remove="handleRemove"
                            :on-success="uploadImgDone"
                            :with-credentials="true">
-                    <i class="el-icon-plus"></i>
+                    <el-button size="small" type="primary">点击上传</el-button>
                 </el-upload>
                 <el-dialog title="查看大图"
                            :visible.sync="dialogVisible">
@@ -31,6 +29,9 @@
                 </el-dialog>
             </el-form-item>
             <el-form-item label="上传展示视频">
+                <object data="" type="" style="width: 80%; height: 600px;" v-show="videoUrl">
+                    <embed :src="videoUrl" type=""  style="width: 100%; height: 600px;">
+                </object>
                 <el-upload class="upload-demo"
                            action="http://39.104.97.6:8080/reportExperoment/fileUpload"
                            :on-remove="handleRemove"
@@ -75,6 +76,8 @@
                 </div>
             </el-form-item>
             <el-form-item label="项目描述">
+                <iframe :src="descript" width="100%" height="500px;" frameborder="1"></iframe>
+
                 <el-upload action="http://39.104.97.6:8080/reportExperoment/fileUpload"
                            :on-success="uploadDescDone"
                            :before-upload="beforePdfUpload"
@@ -86,10 +89,12 @@
                 </el-upload>
             </el-form-item>
             <el-form-item label="实验指导">
+                <iframe :src="guide" width="100%" height="500px;" frameborder="1"></iframe>
                 <el-upload action="http://39.104.97.6:8080/reportExperoment/fileUpload"
-                           :on-success="uploadDescDone"
-                           :before-upload="beforeExaminTEchUpload"
-                           :with-credentials="true">
+                           :on-success="uploadTechDone"
+                           :before-upload="beforePdfUpload"
+                           :with-credentials="true"
+                           :limit="1">
                     <el-button size="small"
                                type="primary">点击上传</el-button>
                     <div slot="tip"
@@ -160,10 +165,10 @@ import vue from 'vue'
 export default {
     data() {
         return {
-            imgList: [],
             dialogImageUrl: '',
             dialogVisible: false,
             showExaminDialog: false,
+            imgUrl: '',
             videoUrl: '',
             expName: '',
             expIntroduct: '',
@@ -173,7 +178,6 @@ export default {
             descript: '',
             feature: '',
             guide: '',
-            descript: '',
             list: [],
             loading: false,
             totalNum: 0,
@@ -206,7 +210,12 @@ export default {
             },
             isAddExamin: true,
             examinInfo: null,
-            fileList: []
+            fileList: [],
+            editorTeam: null,
+            editorRequire: null,
+            editorStructure: null,
+            editorFeature: null,
+            editorService: null
         }
     },
     computed: {
@@ -266,13 +275,30 @@ export default {
         },
         beforePdfUpload(file) {
             const pdf = file.name.substring(file.name.lastIndexOf('.') + 1)
-            if (pdf !== 'pdf' || pdf !== 'PDF') {
+            if (pdf !== 'pdf' && pdf !== 'PDF') {
                 this.$message({
                     message: '请上传.pdf格式的文件',
                     type: 'warning'
                 })
             }
             return pdf === 'pdf' || pdf === 'PDF'
+        },
+        uploadTechDone(res, file) {
+            if (res.code === 401) {
+                this.$store.dispatch('manuallyLoginOut')
+                this.$router.push({
+                    path: '/login',
+                    query: {
+                        redirect: this.$route.path
+                    }
+                })
+            } else if (res.code === 200) {
+                this.guide = 'http://39.104.97.6:8001/' + res.data
+            } else {
+                this.$notify.error({
+                    message: res.msg || '上传项目描述失败'
+                })
+            }
         },
         uploadDescDone(res, file) {
             if (res.code === 401) {
@@ -291,27 +317,10 @@ export default {
                 })
             }
         },
-        beforeExaminTEchUpload(res, file) {
-            if (res.code === 401) {
-                this.$store.dispatch('manuallyLoginOut')
-                this.$router.push({
-                    path: '/login',
-                    query: {
-                        redirect: this.$route.path
-                    }
-                })
-            } else if (res.code === 200) {
-                this.guide = 'http://39.104.97.6:8001/' + res.data
-            } else {
-                this.$notify.error({
-                    message: res.msg || '上传项目描述失败'
-                })
-            }
-        },
         initEditor(ele, keyName) {
             const editor = new E(ele)
             editor.customConfig.onchange = html => {
-                this['keyName'] = html
+                this[keyName] = html
             }
             editor.customConfig.showLinkImg = false
             editor.customConfig.uploadImgServer = 'http://39.104.97.6:8080/reportExperoment/fileUpload'
@@ -337,7 +346,7 @@ export default {
                 }
             }
             editor.create()
-            return deepCopy(editor)
+            return editor
         },
         getList() {
             vue.axios
@@ -542,11 +551,17 @@ export default {
                     this.videoUrl = res.data.videoUrl
                     this.expName = res.data.expName
                     this.expIntroduct = res.data.expIntroduct
+                    this.editorTeam.txt.html(res.data.team)
                     this.team = res.data.team
-                    this.require = res.data.require
+                    this.editorRequire.txt.html(res.data.require)
+                    this.require = res.data.require                    
+                    this.editorStructure.txt.html(res.data.structure)
                     this.structure = res.data.structure
-                    this.descript = res.data.descript
+                    this.service = res.data.service
+                    this.editorService.txt.html(res.data.service)
+                    this.editorFeature.txt.html(res.data.feature)
                     this.feature = res.data.feature
+                    this.descript = res.data.descript
                     this.guide = res.data.guide
                     this.imgUrl = res.data.imgUrl
                 } else {
@@ -573,7 +588,7 @@ export default {
                 videoUrl: this.videoUrl,
                 expIntroduct: this.expIntroduct
             }
-            vue.axios.post(this.API_ROOT + '/reportExperoment/addReportExp', data).then(res => {
+            vue.axios.post(this.API_ROOT + 'reportExperoment/addReportExp', data).then(res => {
                 if (res.code === 401) {
                     this.$store.dispatch('manuallyLoginOut')
                     this.$router.push({
@@ -597,6 +612,7 @@ export default {
         },
         editContent() {
             const data = {
+                id: this.id,
                 team: this.team,
                 descript: this.descript,
                 require: this.require,
@@ -609,7 +625,7 @@ export default {
                 videoUrl: this.videoUrl,
                 expIntroduct: this.expIntroduct
             }
-            vue.axios.post(this.API_ROOT + 'reportExperoment/updateReportExp', data).then(res => {
+            vue.axios.put(this.API_ROOT + 'reportExperoment/updateReportExp', data).then(res => {
                 if (res.code === 401) {
                     this.$store.dispatch('manuallyLoginOut')
                     this.$router.push({
@@ -634,11 +650,11 @@ export default {
     },
     mounted() {
         this.$nextTick(() => {
-            this.initEditor(this.$refs.editorTeam, 'team')
-            this.initEditor(this.$refs.editorRequire, 'require')
-            this.initEditor(this.$refs.editorStructure, 'structure')
-            this.initEditor(this.$refs.editorFeature, 'feature')
-            this.initEditor(this.$refs.editorService, 'service')
+            this.editorTeam = this.initEditor(this.$refs.editorTeam, 'team')
+            this.editorRequire = this.initEditor(this.$refs.editorRequire, 'require')
+            this.editorStructure = this.initEditor(this.$refs.editorStructure, 'structure')
+            this.editorFeature = this.initEditor(this.$refs.editorFeature, 'feature')
+            this.editorService =  this.initEditor(this.$refs.editorService, 'service')
         })
         if (this.id) {
             this.getList();
