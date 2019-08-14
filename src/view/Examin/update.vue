@@ -17,6 +17,7 @@
                 <el-upload action="http://39.104.97.6:8080/reportExperoment/fileUpload"
                            :on-preview="handlePictureCardPreview"
                            :on-remove="handleRemove"
+                           :before-upload="beforeImgUpload"
                            :on-success="uploadImgDone"
                            :with-credentials="true">
                     <el-button size="small" type="primary">点击上传</el-button>
@@ -29,12 +30,29 @@
                 </el-dialog>
             </el-form-item>
             <el-form-item label="上传展示视频">
-                <object data="" type="" style="width: 80%; height: 600px;" v-show="videoUrl">
-                    <embed :src="videoUrl" type=""  style="width: 100%; height: 600px;">
+                <object v-show="videoUrl"
+                        data=""
+                        type=""
+                        style="width: 80%; height: 600px;">
+                    <embed :src="videoUrl" type="audio/mpeg" style="width: 100%; height: 600px;">
                 </object>
+                <!-- codebase=" http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" -->
+                <!-- type="application/x-shockwave-flash"  pluginspage="http://www.macromedia.com/go/getflashplayer" -->
+                           <!-- type="audio/mpeg" -->
+                <!-- <object v-show="videoUrl"
+                        
+                        classid="clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA"
+                        style="width: 80%; height: 600px;"
+                        >
+                    <param name="movie"
+                           value="static/flvplayer.swf">
+                           
+                    <embed :src="videoUrl" 
+                            type="audio/x-pn-realaudio-plugin"  style="width: 100%; height: 600px;">
+                </object> -->
                 <el-upload class="upload-demo"
                            action="http://39.104.97.6:8080/reportExperoment/fileUpload"
-                           :on-remove="handleRemove"
+                           :on-remove="handleVideoRemove"
                            :before-upload="beforeUpload"
                            :on-success="uploadVideoDone"
                            :with-credentials="true"
@@ -43,7 +61,6 @@
                     <el-button size="small"
                                type="primary">点击上传</el-button>
                 </el-upload>
-                <!-- <video :src="showImg"></video> -->
             </el-form-item>
             <el-form-item label="项目团队">
                 <div>
@@ -76,10 +93,10 @@
                 </div>
             </el-form-item>
             <el-form-item label="项目描述">
-                <iframe :src="descript" width="100%" height="500px;" frameborder="1"></iframe>
-
+                <iframe v-show="descript" :src="descript" width="100%" height="500px;" frameborder="1"></iframe>
                 <el-upload action="http://39.104.97.6:8080/reportExperoment/fileUpload"
                            :on-success="uploadDescDone"
+                           :on-remove="handleDescRemove"
                            :before-upload="beforePdfUpload"
                            :with-credentials="true">
                     <el-button size="small"
@@ -89,12 +106,12 @@
                 </el-upload>
             </el-form-item>
             <el-form-item label="实验指导">
-                <iframe :src="guide" width="100%" height="500px;" frameborder="1"></iframe>
+                <iframe v-show="guide" :src="guide" width="100%" height="500px;" frameborder="1"></iframe>
                 <el-upload action="http://39.104.97.6:8080/reportExperoment/fileUpload"
                            :on-success="uploadTechDone"
+                           :on-remove="handleGuideRemove"
                            :before-upload="beforePdfUpload"
-                           :with-credentials="true"
-                           :limit="1">
+                           :with-credentials="true">
                     <el-button size="small"
                                type="primary">点击上传</el-button>
                     <div slot="tip"
@@ -104,7 +121,7 @@
             <el-form-item  label="实验资料">
                 <el-button size="small"
                            type="primary"
-                           @click="showExaminDialog = true; isAddExamin = true; form = {}; fileList = []">添加实验资料</el-button>
+                           @click="addExamin()">添加实验资料</el-button>
                 <tableList @handleSizeChange="handleSizeChange"
                            @handleCurrentChange="handleCurrentChange"
                            @operateClick="operateClick"
@@ -126,7 +143,7 @@
         </el-form>
         <el-dialog :title="!isAddExamin?'修改实验资料':'添加实验资料'"
                    :visible.sync="showExaminDialog"
-                   width="30%"
+                   width="60%"
                    :before-close="handleClose">
             <el-form ref="form"
                      :model="form"
@@ -135,17 +152,22 @@
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
                 <el-form-item label="资源地址">
+                    <iframe v-show="examinType && examinType === 'pdf' && form.url" :src="form.url" width="100%" height="500px;" frameborder="1"></iframe>
+                    <object v-show="examinType && examinType !== 'pdf' && form.url"
+                            data=""
+                            type=""
+                            style="width: 100%; height: 600px;">
+                        <embed :src="form.url" style="width: 100%; height: 600px;">
+                    </object>
                     <el-upload class="upload-demo"
                                action="http://39.104.97.6:8080/reportExperoment/fileUpload"
                                :on-success="uploadExaminDone"
-                               :with-credentials="true"
-                               :limit="1"
-                               :file-list="fileList">
+                               :before-upload="beforeExaminUpload"
+                               :with-credentials="true">
                         <el-button size="small"
                                    type="primary">点击上传</el-button>
                     </el-upload>
                 </el-form-item>
-
             </el-form>
             <span slot="footer"
                   class="dialog-footer">
@@ -215,7 +237,8 @@ export default {
             editorRequire: null,
             editorStructure: null,
             editorFeature: null,
-            editorService: null
+            editorService: null,
+            examinType: ''
         }
     },
     computed: {
@@ -224,7 +247,18 @@ export default {
         }
     },
     methods: {
-        handleRemove() {},
+        handleRemove() {
+            this.imgUrl = ''
+        },
+        handleVideoRemove() {
+            this.videoUrl = ''
+        },
+        handleDescRemove() {
+            this.descript = ''
+        },
+        handleGuideRemove() {
+            this.guide = ''
+        },
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url
             this.dialogVisible = true
@@ -247,14 +281,41 @@ export default {
             }
         },
         beforeUpload(file) {
-            const mp4 = file.name.substring(file.name.lastIndexOf('.') + 1)
-            if (!mp4) {
+            const type = file.name.substring(file.name.lastIndexOf('.') + 1)
+            const reg = new RegExp(/(avi|rmvb|rm|flv|mp4)$/, 'ig')
+            if (!reg.test(type)) {
                 this.$message({
-                    message: '请上传.mp4格式的视频',
+                    message: '请上传mp4、avi、rmvb、rm、flv格式的视频',
                     type: 'warning'
                 })
             }
-            return mp4 === 'mp4'
+            return reg.test(type)
+        },
+        beforeImgUpload(file) {
+            const imgType = file.name.substring(file.name.lastIndexOf('.') + 1)
+            const reg = new RegExp(/(jpeg|jpg|png|gif|bmp|raw|tiff)$/, 'ig')
+            
+            if (!reg.test(imgType)) {
+                this.$message({
+                    message: '请上传jpeg、jpg、png、gif格式的图片',
+                    type: 'warning'
+                })
+            }
+            return reg.test(imgType)
+        },
+        beforeExaminUpload(file) {
+            // debugger
+
+            // const type = file.name.substring(file.name.lastIndexOf('.') + 1)
+            // const reg = new RegExp(/(pdf|avi|rmvb|rm|flv|mp4)$/, 'ig') 
+
+            // if (!reg.test(type)) {
+            //     this.$message({
+            //         message: '请上传pdf格式的文档，或mp4、avi、rmvb、rm、flv格式的视频',
+            //         type: 'warning'
+            //     })
+            // }
+            // return reg.test(type)
         },
         uploadVideoDone(res, file) {
             if (res.code === 401) {
@@ -277,7 +338,7 @@ export default {
             const pdf = file.name.substring(file.name.lastIndexOf('.') + 1)
             if (pdf !== 'pdf' && pdf !== 'PDF') {
                 this.$message({
-                    message: '请上传.pdf格式的文件',
+                    message: '请上传pdf格式的文件',
                     type: 'warning'
                 })
             }
@@ -382,8 +443,10 @@ export default {
                 this.examinInfo = props.row
                 this.form = {
                     name: props.row.name,
-                    url: props.row.url
+                    url: props.row.url,
+                    type: props.row.url && props.row.url.substring(props.row.url.lastIndexOf('.') + 1)
                 }
+                this.examinType = props.row.url && props.row.url.substring(props.row.url.lastIndexOf('.') + 1)
             } else if (item === '删除') {
                 this.$confirm('是否删除该实验资料?', '提示', {
                     confirmButtonText: '确定',
@@ -463,11 +526,19 @@ export default {
                 })
             } else if (res.code === 200) {
                 this.form.url = 'http://39.104.97.6:8001/' + res.data
+                this.examinType = this.form.url.substring(this.form.url.lastIndexOf('.') + 1)
             } else {
                 this.$notify.error({
                     message: res.msg || '上传实验资源失败'
                 })
             }
+        },
+        addExamin() {
+            this.showExaminDialog = true; 
+            this.isAddExamin = true;
+            this.form = {}; 
+            this.fileList = []; 
+            this.examinType = '';
         },
         updateExamin() {
             if (!this.form.name || !this.form.url) {
@@ -665,4 +736,7 @@ export default {
 </script>
 
 <style lang="less">
+.el-dialog__title{
+    color: #fff;
+}
 </style>
