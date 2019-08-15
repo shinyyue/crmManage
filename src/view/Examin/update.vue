@@ -13,14 +13,17 @@
                 <el-input v-model="expIntroduct"></el-input>
             </el-form-item>
             <el-form-item label="实验图片">
-                <img style="width: auto; height: 148px;" :src="imgUrl" v-show="imgUrl">
+                <img style="width: auto; height: 148px;"
+                     :src="imgUrl"
+                     v-show="imgUrl">
                 <el-upload action="http://39.104.97.6:8080/reportExperoment/fileUpload"
                            :on-preview="handlePictureCardPreview"
                            :on-remove="handleRemove"
                            :before-upload="beforeImgUpload"
                            :on-success="uploadImgDone"
                            :with-credentials="true">
-                    <el-button size="small" type="primary">点击上传</el-button>
+                    <el-button size="small"
+                               type="primary">点击上传</el-button>
                 </el-upload>
                 <el-dialog title="查看大图"
                            :visible.sync="dialogVisible">
@@ -34,11 +37,13 @@
                         data=""
                         type=""
                         style="width: 80%; height: 600px;">
-                    <embed :src="videoUrl" type="audio/mpeg" style="width: 100%; height: 600px;">
+                    <embed :src="videoUrl"
+                           type="audio/mpeg"
+                           style="width: 100%; height: 600px;">
                 </object>
                 <!-- codebase=" http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" -->
                 <!-- type="application/x-shockwave-flash"  pluginspage="http://www.macromedia.com/go/getflashplayer" -->
-                           <!-- type="audio/mpeg" -->
+                <!-- type="audio/mpeg" -->
                 <!-- <object v-show="videoUrl"
                         
                         classid="clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA"
@@ -93,7 +98,11 @@
                 </div>
             </el-form-item>
             <el-form-item label="项目描述">
-                <iframe v-show="descript" :src="descript" width="100%" height="500px;" frameborder="1"></iframe>
+                <iframe v-show="descript"
+                        :src="descript"
+                        width="100%"
+                        height="500px;"
+                        frameborder="1"></iframe>
                 <el-upload action="http://39.104.97.6:8080/reportExperoment/fileUpload"
                            :on-success="uploadDescDone"
                            :on-remove="handleDescRemove"
@@ -106,7 +115,11 @@
                 </el-upload>
             </el-form-item>
             <el-form-item label="实验指导">
-                <iframe v-show="guide" :src="guide" width="100%" height="500px;" frameborder="1"></iframe>
+                <iframe v-show="guide"
+                        :src="guide"
+                        width="100%"
+                        height="500px;"
+                        frameborder="1"></iframe>
                 <el-upload action="http://39.104.97.6:8080/reportExperoment/fileUpload"
                            :on-success="uploadTechDone"
                            :on-remove="handleGuideRemove"
@@ -118,7 +131,7 @@
                          class="el-upload__tip">只能上传pdf文件</div>
                 </el-upload>
             </el-form-item>
-            <el-form-item  label="实验资料">
+            <el-form-item label="实验资料">
                 <el-button size="small"
                            type="primary"
                            @click="addExamin()">添加实验资料</el-button>
@@ -138,7 +151,7 @@
             <el-form-item>
                 <el-button @click="$router.go(-1)">返 回</el-button>
                 <el-button type="primary"
-                            @click="updateContent()">{{id ? '修改': '添加'}}</el-button>
+                           @click="updateContent()">{{id ? '修改': '添加'}}</el-button>
             </el-form-item>
         </el-form>
         <el-dialog :title="!isAddExamin?'修改实验资料':'添加实验资料'"
@@ -152,12 +165,17 @@
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
                 <el-form-item label="资源地址">
-                    <iframe v-show="examinType && examinType === 'pdf' && form.url" :src="form.url" width="100%" height="500px;" frameborder="1"></iframe>
+                    <iframe v-show="examinType && examinType === 'pdf' && form.url"
+                            :src="form.url"
+                            width="100%"
+                            height="500px;"
+                            frameborder="1"></iframe>
                     <object v-show="examinType && examinType !== 'pdf' && form.url"
                             data=""
                             type=""
                             style="width: 100%; height: 600px;">
-                        <embed :src="form.url" style="width: 100%; height: 600px;">
+                        <embed :src="form.url"
+                               style="width: 100%; height: 600px;">
                     </object>
                     <el-upload class="upload-demo"
                                action="http://39.104.97.6:8080/reportExperoment/fileUpload"
@@ -283,39 +301,45 @@ export default {
         beforeUpload(file) {
             const type = file.name.substring(file.name.lastIndexOf('.') + 1)
             const reg = new RegExp(/(avi|rmvb|rm|flv|mp4)$/, 'ig')
-            if (!reg.test(type)) {
+            const tag = reg.test(type)
+            if (!tag) {
                 this.$message({
                     message: '请上传mp4、avi、rmvb、rm、flv格式的视频',
                     type: 'warning'
                 })
             }
-            return reg.test(type)
+            return tag
         },
         beforeImgUpload(file) {
             const imgType = file.name.substring(file.name.lastIndexOf('.') + 1)
             const reg = new RegExp(/(jpeg|jpg|png|gif|bmp|raw|tiff)$/, 'ig')
-            
-            if (!reg.test(imgType)) {
+            const tag = reg.test(imgType)
+
+            console.log(reg.test(imgType))
+
+            // debugger
+            if (!tag) {
                 this.$message({
                     message: '请上传jpeg、jpg、png、gif格式的图片',
                     type: 'warning'
                 })
             }
-            return reg.test(imgType)
+            return tag
         },
         beforeExaminUpload(file) {
-            // debugger
+            const type = file.name.substring(file.name.lastIndexOf('.') + 1)
+            const reg = new RegExp(/(pdf|avi|rmvb|rm|flv|mp4)$/, 'ig')
+            const tag = reg.test(type)
+            console.log(3333, reg.test(type))
 
-            // const type = file.name.substring(file.name.lastIndexOf('.') + 1)
-            // const reg = new RegExp(/(pdf|avi|rmvb|rm|flv|mp4)$/, 'ig') 
-
-            // if (!reg.test(type)) {
-            //     this.$message({
-            //         message: '请上传pdf格式的文档，或mp4、avi、rmvb、rm、flv格式的视频',
-            //         type: 'warning'
-            //     })
-            // }
-            // return reg.test(type)
+            if (!tag) {
+                this.$message({
+                    message:
+                        '请上传pdf格式的文档，或mp4、avi、rmvb、rm、flv格式的视频',
+                    type: 'warning'
+                })
+            }
+            return tag
         },
         uploadVideoDone(res, file) {
             if (res.code === 401) {
@@ -384,7 +408,8 @@ export default {
                 this[keyName] = html
             }
             editor.customConfig.showLinkImg = false
-            editor.customConfig.uploadImgServer = 'http://39.104.97.6:8080/reportExperoment/fileUpload'
+            editor.customConfig.uploadImgServer =
+                'http://39.104.97.6:8080/reportExperoment/fileUpload'
             editor.customConfig.withCredentials = true
             editor.customConfig.uploadImgHooks = {
                 customInsert: function(insertImg, res, editor) {
@@ -444,9 +469,15 @@ export default {
                 this.form = {
                     name: props.row.name,
                     url: props.row.url,
-                    type: props.row.url && props.row.url.substring(props.row.url.lastIndexOf('.') + 1)
+                    type:
+                        props.row.url &&
+                        props.row.url.substring(
+                            props.row.url.lastIndexOf('.') + 1
+                        )
                 }
-                this.examinType = props.row.url && props.row.url.substring(props.row.url.lastIndexOf('.') + 1)
+                this.examinType =
+                    props.row.url &&
+                    props.row.url.substring(props.row.url.lastIndexOf('.') + 1)
             } else if (item === '删除') {
                 this.$confirm('是否删除该实验资料?', '提示', {
                     confirmButtonText: '确定',
@@ -526,7 +557,9 @@ export default {
                 })
             } else if (res.code === 200) {
                 this.form.url = 'http://39.104.97.6:8001/' + res.data
-                this.examinType = this.form.url.substring(this.form.url.lastIndexOf('.') + 1)
+                this.examinType = this.form.url.substring(
+                    this.form.url.lastIndexOf('.') + 1
+                )
             } else {
                 this.$notify.error({
                     message: res.msg || '上传实验资源失败'
@@ -534,11 +567,14 @@ export default {
             }
         },
         addExamin() {
-            this.showExaminDialog = true; 
-            this.isAddExamin = true;
-            this.form = {}; 
-            this.fileList = []; 
-            this.examinType = '';
+            this.showExaminDialog = true
+            this.isAddExamin = true
+            this.form = {
+                url: '',
+                name: ''
+            }
+            this.fileList = []
+            this.examinType = ''
         },
         updateExamin() {
             if (!this.form.name || !this.form.url) {
@@ -609,38 +645,44 @@ export default {
             }
         },
         getDetails() {
-            vue.axios.get(this.API_ROOT + 'reportExperoment/queryByReportExpId?id='+this.id).then(res => {
-                if (res.code === 401) {
-                    this.$store.dispatch('manuallyLoginOut')
-                    this.$router.push({
-                        path: '/login',
-                        query: {
-                            redirect: this.$route.path
-                        }
-                    })
-                } else if (res.code === 200) {
-                    this.videoUrl = res.data.videoUrl
-                    this.expName = res.data.expName
-                    this.expIntroduct = res.data.expIntroduct
-                    this.editorTeam.txt.html(res.data.team)
-                    this.team = res.data.team
-                    this.editorRequire.txt.html(res.data.require)
-                    this.require = res.data.require                    
-                    this.editorStructure.txt.html(res.data.structure)
-                    this.structure = res.data.structure
-                    this.service = res.data.service
-                    this.editorService.txt.html(res.data.service)
-                    this.editorFeature.txt.html(res.data.feature)
-                    this.feature = res.data.feature
-                    this.descript = res.data.descript
-                    this.guide = res.data.guide
-                    this.imgUrl = res.data.imgUrl
-                } else {
-                    this.$notify.error({
-                        message: res.msg || '获取实验资料失败'
-                    })
-                }
-            })
+            vue.axios
+                .get(
+                    this.API_ROOT +
+                        'reportExperoment/queryByReportExpId?id=' +
+                        this.id
+                )
+                .then(res => {
+                    if (res.code === 401) {
+                        this.$store.dispatch('manuallyLoginOut')
+                        this.$router.push({
+                            path: '/login',
+                            query: {
+                                redirect: this.$route.path
+                            }
+                        })
+                    } else if (res.code === 200) {
+                        this.videoUrl = res.data.videoUrl
+                        this.expName = res.data.expName
+                        this.expIntroduct = res.data.expIntroduct
+                        this.editorTeam.txt.html(res.data.team)
+                        this.team = res.data.team
+                        this.editorRequire.txt.html(res.data.require)
+                        this.require = res.data.require
+                        this.editorStructure.txt.html(res.data.structure)
+                        this.structure = res.data.structure
+                        this.service = res.data.service
+                        this.editorService.txt.html(res.data.service)
+                        this.editorFeature.txt.html(res.data.feature)
+                        this.feature = res.data.feature
+                        this.descript = res.data.descript
+                        this.guide = res.data.guide
+                        this.imgUrl = res.data.imgUrl
+                    } else {
+                        this.$notify.error({
+                            message: res.msg || '获取实验资料失败'
+                        })
+                    }
+                })
         },
         updateContent() {
             this.id ? this.editContent() : this.addContent()
@@ -659,27 +701,29 @@ export default {
                 videoUrl: this.videoUrl,
                 expIntroduct: this.expIntroduct
             }
-            vue.axios.post(this.API_ROOT + 'reportExperoment/addReportExp', data).then(res => {
-                if (res.code === 401) {
-                    this.$store.dispatch('manuallyLoginOut')
-                    this.$router.push({
-                        path: '/login',
-                        query: {
-                            redirect: this.$route.path
-                        }
-                    })
-                } else if (res.code === 200) {
-                    this.$notify({
-                        message: '添加成功！',
-                        type: 'success'
-                    })
-                    this.$router.go(-1)
-                } else {
-                    this.$notify.error({
-                        message: res.msg || '添加申报实验失败'
-                    })
-                }
-            })
+            vue.axios
+                .post(this.API_ROOT + 'reportExperoment/addReportExp', data)
+                .then(res => {
+                    if (res.code === 401) {
+                        this.$store.dispatch('manuallyLoginOut')
+                        this.$router.push({
+                            path: '/login',
+                            query: {
+                                redirect: this.$route.path
+                            }
+                        })
+                    } else if (res.code === 200) {
+                        this.$notify({
+                            message: '添加成功！',
+                            type: 'success'
+                        })
+                        this.$router.go(-1)
+                    } else {
+                        this.$notify.error({
+                            message: res.msg || '添加申报实验失败'
+                        })
+                    }
+                })
         },
         editContent() {
             const data = {
@@ -696,40 +740,54 @@ export default {
                 videoUrl: this.videoUrl,
                 expIntroduct: this.expIntroduct
             }
-            vue.axios.put(this.API_ROOT + 'reportExperoment/updateReportExp', data).then(res => {
-                if (res.code === 401) {
-                    this.$store.dispatch('manuallyLoginOut')
-                    this.$router.push({
-                        path: '/login',
-                        query: {
-                            redirect: this.$route.path
-                        }
-                    })
-                } else if (res.code === 200) {
-                    this.$notify({
-                        message: '修改成功！',
-                        type: 'success'
-                    })
-                    this.$router.go(-1)
-                } else {
-                    this.$notify.error({
-                        message: res.msg || '修改申报实验失败'
-                    })
-                }
-            })
+            vue.axios
+                .put(this.API_ROOT + 'reportExperoment/updateReportExp', data)
+                .then(res => {
+                    if (res.code === 401) {
+                        this.$store.dispatch('manuallyLoginOut')
+                        this.$router.push({
+                            path: '/login',
+                            query: {
+                                redirect: this.$route.path
+                            }
+                        })
+                    } else if (res.code === 200) {
+                        this.$notify({
+                            message: '修改成功！',
+                            type: 'success'
+                        })
+                        this.$router.go(-1)
+                    } else {
+                        this.$notify.error({
+                            message: res.msg || '修改申报实验失败'
+                        })
+                    }
+                })
         }
     },
     mounted() {
         this.$nextTick(() => {
             this.editorTeam = this.initEditor(this.$refs.editorTeam, 'team')
-            this.editorRequire = this.initEditor(this.$refs.editorRequire, 'require')
-            this.editorStructure = this.initEditor(this.$refs.editorStructure, 'structure')
-            this.editorFeature = this.initEditor(this.$refs.editorFeature, 'feature')
-            this.editorService =  this.initEditor(this.$refs.editorService, 'service')
+            this.editorRequire = this.initEditor(
+                this.$refs.editorRequire,
+                'require'
+            )
+            this.editorStructure = this.initEditor(
+                this.$refs.editorStructure,
+                'structure'
+            )
+            this.editorFeature = this.initEditor(
+                this.$refs.editorFeature,
+                'feature'
+            )
+            this.editorService = this.initEditor(
+                this.$refs.editorService,
+                'service'
+            )
         })
         if (this.id) {
-            this.getList();
-            this.getDetails();
+            this.getList()
+            this.getDetails()
         }
     }
 }
@@ -737,15 +795,14 @@ export default {
 
 <style lang="less">
 #examin_update {
-    .el-dialog__title{
+    .el-dialog__title {
         color: #fff;
     }
-    .editor-item{
+    .editor-item {
         background: #fff;
     }
     .el-form-item__label {
         color: #333;
     }
 }
-
 </style>
