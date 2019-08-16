@@ -14,7 +14,7 @@
             </el-form-item>
             <el-form-item label="实验图片">
                 <img style="width: auto; height: 148px;"
-                     :src="imgUrl"
+                     :src="'http://39.104.97.6:8001/' + imgUrl"
                      v-show="imgUrl">
                 <el-upload action="http://39.104.97.6:8080/reportExperoment/fileUpload"
                            :on-preview="handlePictureCardPreview"
@@ -37,7 +37,7 @@
                         data=""
                         type=""
                         style="width: 80%; height: 600px;">
-                    <embed :src="videoUrl"
+                    <embed :src="'http://39.104.97.6:8001/' + videoUrl"
                            type="audio/mpeg"
                            style="width: 100%; height: 600px;">
                 </object>
@@ -61,7 +61,6 @@
                            :before-upload="beforeUpload"
                            :on-success="uploadVideoDone"
                            :with-credentials="true"
-                           accept=".mp4"
                            :limit="1">
                     <el-button size="small"
                                type="primary">点击上传</el-button>
@@ -99,7 +98,7 @@
             </el-form-item>
             <el-form-item label="项目描述">
                 <iframe v-show="descript"
-                        :src="descript"
+                        :src="'http://39.104.97.6:8001/' + descript"
                         width="100%"
                         height="500px;"
                         frameborder="1"></iframe>
@@ -116,7 +115,7 @@
             </el-form-item>
             <el-form-item label="实验指导">
                 <iframe v-show="guide"
-                        :src="guide"
+                        :src="'http://39.104.97.6:8001/' + guide"
                         width="100%"
                         height="500px;"
                         frameborder="1"></iframe>
@@ -124,7 +123,8 @@
                            :on-success="uploadTechDone"
                            :on-remove="handleGuideRemove"
                            :before-upload="beforePdfUpload"
-                           :with-credentials="true">
+                           :with-credentials="true"
+                           :fileList="[]">
                     <el-button size="small"
                                type="primary">点击上传</el-button>
                     <div slot="tip"
@@ -149,7 +149,7 @@
                 </tableList>
             </el-form-item>
             <el-form-item>
-                <el-button @click="$router.go(-1)">返 回</el-button>
+                <el-button @click="back()">返 回</el-button>
                 <el-button type="primary"
                            @click="updateContent()">{{id ? '修改': '添加'}}</el-button>
             </el-form-item>
@@ -166,7 +166,7 @@
                 </el-form-item>
                 <el-form-item label="资源地址">
                     <iframe v-show="examinType && examinType === 'pdf' && form.url"
-                            :src="form.url"
+                            :src="'http://39.104.97.6:8001/' + form.url"
                             width="100%"
                             height="500px;"
                             frameborder="1"></iframe>
@@ -174,14 +174,16 @@
                             data=""
                             type=""
                             style="width: 100%; height: 600px;">
-                        <embed :src="form.url"
+                        <embed :src="'http://39.104.97.6:8001/' + form.url"
+                               type="audio/mpeg"
                                style="width: 100%; height: 600px;">
                     </object>
                     <el-upload class="upload-demo"
                                action="http://39.104.97.6:8080/reportExperoment/fileUpload"
                                :on-success="uploadExaminDone"
                                :before-upload="beforeExaminUpload"
-                               :with-credentials="true">
+                               :with-credentials="true"
+                               ref="examinUpload">
                         <el-button size="small"
                                    type="primary">点击上传</el-button>
                     </el-upload>
@@ -291,7 +293,7 @@ export default {
                     }
                 })
             } else if (res.code === 200) {
-                this.imgUrl = 'http://39.104.97.6:8001/' + res.data
+                this.imgUrl = res.data
             } else {
                 this.$notify.error({
                     message: res.msg || '上传图片失败'
@@ -351,7 +353,7 @@ export default {
                     }
                 })
             } else if (res.code === 200) {
-                this.videoUrl = 'http://39.104.97.6:8001/' + res.data
+                this.videoUrl = res.data
             } else {
                 this.$notify.error({
                     message: res.msg || '上传图片失败'
@@ -378,7 +380,7 @@ export default {
                     }
                 })
             } else if (res.code === 200) {
-                this.guide = 'http://39.104.97.6:8001/' + res.data
+                this.guide = res.data
             } else {
                 this.$notify.error({
                     message: res.msg || '上传项目描述失败'
@@ -395,7 +397,7 @@ export default {
                     }
                 })
             } else if (res.code === 200) {
-                this.descript = 'http://39.104.97.6:8001/' + res.data
+                this.descript = res.data
             } else {
                 this.$notify.error({
                     message: res.msg || '上传项目描述失败'
@@ -422,7 +424,7 @@ export default {
                             }
                         })
                     } else if (res.code === 200) {
-                        const url = 'http://39.104.97.6:8001/' + res.data
+                        const url = res.data
                         insertImg(url)
                     } else {
                         this.$notify.error({
@@ -556,7 +558,7 @@ export default {
                     }
                 })
             } else if (res.code === 200) {
-                this.form.url = 'http://39.104.97.6:8001/' + res.data
+                this.form.url = res.data
                 this.examinType = this.form.url.substring(
                     this.form.url.lastIndexOf('.') + 1
                 )
@@ -575,6 +577,9 @@ export default {
             }
             this.fileList = []
             this.examinType = ''
+            this.$nextTick(() => {
+                this.$refs.examinUpload.clearFiles()
+            })
         },
         updateExamin() {
             if (!this.form.name || !this.form.url) {
@@ -763,6 +768,9 @@ export default {
                         })
                     }
                 })
+        },
+        back() {
+            this.$router.go(-1)
         }
     },
     mounted() {

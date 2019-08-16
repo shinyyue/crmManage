@@ -43,7 +43,7 @@ export default {
                 },
                 {
                     displayName: '实验图片',
-                    key: 'imgUrl',
+                    key: 'imgUrlAll',
                     align: 'center',
                     type: 'image'
                 },
@@ -75,6 +75,9 @@ export default {
                             }
                         })
                     } else if (res.code === 200) {
+                        res.data && res.data.items.forEach(item => {
+                            item.imgUrlAll = 'http://39.104.97.6:8001/' + item.imgUrl 
+                        })
                         this.list = (res.data && res.data.items) || []
                         this.totalNum = (res.data && res.data.total) || 0
                     }
