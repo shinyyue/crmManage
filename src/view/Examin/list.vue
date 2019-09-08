@@ -76,7 +76,7 @@ export default {
                         })
                     } else if (res.code === 200) {
                         res.data && res.data.items.forEach(item => {
-                            item.imgUrlAll = 'http://39.104.97.6:8001/' + item.imgUrl 
+                            item.imgUrlAll = 'http://47.105.130.130:8001/' + item.imgUrl 
                         })
                         this.list = (res.data && res.data.items) || []
                         this.totalNum = (res.data && res.data.total) || 0

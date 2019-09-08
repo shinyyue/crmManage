@@ -14,9 +14,9 @@
             </el-form-item>
             <el-form-item label="实验图片">
                 <img style="width: auto; height: 148px;"
-                     :src="'http://39.104.97.6:8001/' + imgUrl"
+                     :src="'http://47.105.130.130:8001/' + imgUrl"
                      v-show="imgUrl">
-                <el-upload action="http://39.104.97.6:8080/reportExperoment/fileUpload"
+                <el-upload action="http://47.105.130.130:8080/reportExperoment/fileUpload"
                            :on-preview="handlePictureCardPreview"
                            :on-remove="handleRemove"
                            :before-upload="beforeImgUpload"
@@ -37,7 +37,7 @@
                         data=""
                         type=""
                         style="width: 80%; height: 600px;">
-                    <embed :src="'http://39.104.97.6:8001/' + videoUrl"
+                    <embed :src="'http://47.105.130.130:8001/' + videoUrl"
                            type="audio/mpeg"
                            style="width: 100%; height: 600px;">
                 </object>
@@ -56,7 +56,7 @@
                             type="audio/x-pn-realaudio-plugin"  style="width: 100%; height: 600px;">
                 </object> -->
                 <el-upload class="upload-demo"
-                           action="http://39.104.97.6:8080/reportExperoment/fileUpload"
+                           action="http://47.105.130.130:8080/reportExperoment/fileUpload"
                            :on-remove="handleVideoRemove"
                            :before-upload="beforeUpload"
                            :on-success="uploadVideoDone"
@@ -98,11 +98,11 @@
             </el-form-item>
             <el-form-item label="项目描述">
                 <iframe v-show="descript"
-                        :src="'http://39.104.97.6:8001/' + descript"
+                        :src="'http://47.105.130.130:8001/' + descript"
                         width="100%"
                         height="500px;"
                         frameborder="1"></iframe>
-                <el-upload action="http://39.104.97.6:8080/reportExperoment/fileUpload"
+                <el-upload action="http://47.105.130.130:8080/reportExperoment/fileUpload"
                            :on-success="uploadDescDone"
                            :on-remove="handleDescRemove"
                            :before-upload="beforePdfUpload"
@@ -115,11 +115,11 @@
             </el-form-item>
             <el-form-item label="实验指导">
                 <iframe v-show="guide"
-                        :src="'http://39.104.97.6:8001/' + guide"
+                        :src="'http://47.105.130.130:8001/' + guide"
                         width="100%"
                         height="500px;"
                         frameborder="1"></iframe>
-                <el-upload action="http://39.104.97.6:8080/reportExperoment/fileUpload"
+                <el-upload action="http://47.105.130.130:8080/reportExperoment/fileUpload"
                            :on-success="uploadTechDone"
                            :on-remove="handleGuideRemove"
                            :before-upload="beforePdfUpload"
@@ -166,7 +166,7 @@
                 </el-form-item>
                 <el-form-item label="资源地址">
                     <iframe v-show="examinType && examinType === 'pdf' && form.url"
-                            :src="'http://39.104.97.6:8001/' + form.url"
+                            :src="'http://47.105.130.130:8001/' + form.url"
                             width="100%"
                             height="500px;"
                             frameborder="1"></iframe>
@@ -174,12 +174,12 @@
                             data=""
                             type=""
                             style="width: 100%; height: 600px;">
-                        <embed :src="'http://39.104.97.6:8001/' + form.url"
+                        <embed :src="'http://47.105.130.130:8001/' + form.url"
                                type="audio/mpeg"
                                style="width: 100%; height: 600px;">
                     </object>
                     <el-upload class="upload-demo"
-                               action="http://39.104.97.6:8080/reportExperoment/fileUpload"
+                               action="http://47.105.130.130:8080/reportExperoment/fileUpload"
                                :on-success="uploadExaminDone"
                                :before-upload="beforeExaminUpload"
                                :with-credentials="true"
@@ -411,7 +411,7 @@ export default {
             }
             editor.customConfig.showLinkImg = false
             editor.customConfig.uploadImgServer =
-                'http://39.104.97.6:8080/reportExperoment/fileUpload'
+                'http://47.105.130.130:8080/reportExperoment/fileUpload'
             editor.customConfig.withCredentials = true
             editor.customConfig.uploadImgHooks = {
                 customInsert: function(insertImg, res, editor) {
