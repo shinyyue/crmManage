@@ -10,7 +10,7 @@
                 <div class="login-tab">
                     <span class="tab-item"
                           :class="{'active': loginType === 0}"
-                          @click="changeLoginType('manager')">管理员登录</span>
+                          @click="changeLoginType('manager')">登录</span>
                 </div>
                 <el-form :model="loginForm"
                          :rules="rules"
@@ -22,7 +22,7 @@
                         </span>
                         <el-input class="area"
                                   type="text"
-                                  placeholder="手机号"
+                                  placeholder="用户名"
                                   v-model="loginForm.username"></el-input>
                     </el-form-item>
                     <el-form-item prop="password">
@@ -56,14 +56,14 @@ export default {
             },
             rules: {
                 username: [
-                    { required: true, message: '请输入手机号', trigger: 'blur' }
+                    { required: true, message: '请输入用户名', trigger: 'blur' }
                 ],
                 password: [
                     { required: true, message: '请输入密码', trigger: 'blur' }
                 ]
             },
             showLogin: false,
-            loginType: 0 // 0: 管理员登录； 1: 医生登录
+            loginType: 0 
         }
     },
     methods: {
