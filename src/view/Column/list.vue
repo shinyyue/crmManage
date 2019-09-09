@@ -59,7 +59,12 @@ export default {
                     align: 'center'
                 },
                 {
-                    displayName: '所属学院',
+                    displayName: '栏目类型',
+                    key: 'name',
+                    align: 'center'
+                },
+                {
+                    displayName: '所属学院ID',
                     key: 'collegeId',
                     align: 'center'
                 },
