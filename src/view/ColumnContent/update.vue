@@ -29,7 +29,7 @@
             </el-form-item>
 
             <el-form-item label="上传图片">
-                <el-upload action="http://47.105.130.130:8080/dataBank/oneFileUpload"
+                <el-upload action="http://47.105.130.130:8100/dataBank/oneFileUpload"
                            list-type="picture-card"
                            :limit="1"
                            :data="{type: 2}"
@@ -62,7 +62,7 @@
                           prop="columnType"
                           v-show="columnType == 3">
                 <el-upload class="upload-demo"
-                           action="http://47.105.130.130:8080/dataBank/oneFileUpload"
+                           action="http://47.105.130.130:8100/dataBank/oneFileUpload"
                            :on-remove="handleRemove"
                            :before-upload="beforeUpload"
                            :on-success="uploadVideoDone"
@@ -320,7 +320,7 @@ export default {
         this.id && this.getDetails()
         this.editor.customConfig.showLinkImg = false
         this.editor.customConfig.uploadImgServer =
-            'http://47.105.130.130:8080/dataBank/oneFileUpload'
+            'http://47.105.130.130:8100/dataBank/oneFileUpload'
         this.editor.customConfig.withCredentials = true
         this.editor.customConfig.uploadImgParams = {
             type: 2

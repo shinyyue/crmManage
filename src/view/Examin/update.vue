@@ -16,7 +16,7 @@
                 <img style="width: auto; height: 148px;"
                      :src="'http://47.105.130.130:8001/' + imgUrl"
                      v-show="imgUrl">
-                <el-upload action="http://47.105.130.130:8080/reportExperoment/fileUpload"
+                <el-upload action="http://47.105.130.130:8100/reportExperoment/fileUpload"
                            :on-preview="handlePictureCardPreview"
                            :on-remove="handleRemove"
                            :before-upload="beforeImgUpload"
@@ -56,7 +56,7 @@
                             type="audio/x-pn-realaudio-plugin"  style="width: 100%; height: 600px;">
                 </object> -->
                 <el-upload class="upload-demo"
-                           action="http://47.105.130.130:8080/reportExperoment/fileUpload"
+                           action="http://47.105.130.130:8100/reportExperoment/fileUpload"
                            :on-remove="handleVideoRemove"
                            :before-upload="beforeUpload"
                            :on-success="uploadVideoDone"
@@ -102,7 +102,7 @@
                         width="100%"
                         height="500px;"
                         frameborder="1"></iframe>
-                <el-upload action="http://47.105.130.130:8080/reportExperoment/fileUpload"
+                <el-upload action="http://47.105.130.130:8100/reportExperoment/fileUpload"
                            :on-success="uploadDescDone"
                            :on-remove="handleDescRemove"
                            :before-upload="beforePdfUpload"
@@ -119,7 +119,7 @@
                         width="100%"
                         height="500px;"
                         frameborder="1"></iframe>
-                <el-upload action="http://47.105.130.130:8080/reportExperoment/fileUpload"
+                <el-upload action="http://47.105.130.130:8100/reportExperoment/fileUpload"
                            :on-success="uploadTechDone"
                            :on-remove="handleGuideRemove"
                            :before-upload="beforePdfUpload"
@@ -179,7 +179,7 @@
                                style="width: 100%; height: 600px;">
                     </object>
                     <el-upload class="upload-demo"
-                               action="http://47.105.130.130:8080/reportExperoment/fileUpload"
+                               action="http://47.105.130.130:8100/reportExperoment/fileUpload"
                                :on-success="uploadExaminDone"
                                :before-upload="beforeExaminUpload"
                                :with-credentials="true"
@@ -406,28 +406,30 @@ export default {
         },
         initEditor(ele, keyName) {
             const editor = new E(ele)
+            const _this = this
             editor.customConfig.onchange = html => {
-                this[keyName] = html
+                _this[keyName] = html
             }
             editor.customConfig.showLinkImg = false
+            editor.customConfig.uploadFileName = 'file'
             editor.customConfig.uploadImgServer =
-                'http://47.105.130.130:8080/reportExperoment/fileUpload'
+                'http://47.105.130.130:8100/reportExperoment/fileUpload'
             editor.customConfig.withCredentials = true
             editor.customConfig.uploadImgHooks = {
                 customInsert: function(insertImg, res, editor) {
                     if (res.code === 401) {
-                        this.$store.dispatch('manuallyLoginOut')
-                        this.$router.push({
+                        _this.$store.dispatch('manuallyLoginOut')
+                        _this.$router.push({
                             path: '/login',
                             query: {
-                                redirect: this.$route.path
+                                redirect: _this.$route.path
                             }
                         })
                     } else if (res.code === 200) {
                         const url = res.data
-                        insertImg(url)
+                        insertImg('http://47.105.130.130:8001/' + url)
                     } else {
-                        this.$notify.error({
+                        _this.$notify.error({
                             message: res.msg || '上传失败'
                         })
                     }
