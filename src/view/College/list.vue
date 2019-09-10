@@ -212,7 +212,8 @@ export default {
         editCollege() {
             const data = {
                 id: this.curCollege.id,
-                collegeName: this.form.name
+                collegeName: this.form.name,
+                collegeCode: this.form.code
             }
             this.$store.dispatch('updateCollege', data).then(res => {
                 if (res.code === 200) {
@@ -221,6 +222,7 @@ export default {
                         duration: '1000'
                     })
                     this.dialogVisible = false
+                    this.getList()
                 } else if (res.code === 401) {
                     this.$store.dispatch('manuallyLoginOut')
                     this.$router.push({
