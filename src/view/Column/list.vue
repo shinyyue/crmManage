@@ -166,6 +166,7 @@ export default {
         },
         operateClick(props, item) {
             if (item === '查看栏目内容') {
+                props.type="college"
                 this.jumpToDetails(props)
             } else if (item === '修改') {
                 this.form.name = props.row.columnName
@@ -179,7 +180,8 @@ export default {
                 query: {
                     id: props.row.columnId,
                     collegeId: props.row.collegeId,
-                    columnName: props.row.columnName
+                    columnName: props.row.columnName,
+                    type: props.type
                 }
             })
         },

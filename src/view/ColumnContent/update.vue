@@ -73,7 +73,7 @@
                     <el-button size="small"
                                type="primary">点击上传</el-button>
                 </el-upload>
-                <!-- <video :src="showImg"></video> -->
+                <video v-show="videoUrl" :src="videoUrl" controls="controls"></video>
             </el-form-item>
             <el-form-item label="链接"
                           prop="content">
