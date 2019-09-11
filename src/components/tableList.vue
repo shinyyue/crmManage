@@ -24,12 +24,13 @@
                             操作：operation
                             图片：image
                             单选框：radio
-                            自定义：slot
+                            自定义：customize
                             其他
 
                         text: type有值时，自定义单元格内容
                         ellipsis： 该列是否超出设定宽度后，省略显示
                 -->
+                
                 <el-table-column :selectable="selectable"
                                  type="selection"
                                  v-if="column.type === 'selection'"
@@ -98,6 +99,7 @@
                         <input v-else-if="column.type === 'radio'"
                                type="radio"
                                :checked="props.row[column.key]" />
+                        <div v-else-if="column.type === 'htmlParse'" v-html="props.row[column.key]"></div>
                         <div v-else
                              @click="cellClick(props)"
                              :class="{'content':column.ellipsis}">
@@ -107,7 +109,7 @@
                 </el-table-column>
                 <!-- 自定义类型 -->
                 <slot v-show="customize"
-                      name="customize"></slot>
+                    name="customize"></slot>
             </el-table>
         </div>
         <div class="total-num">总数：{{totalNum}}条</div>

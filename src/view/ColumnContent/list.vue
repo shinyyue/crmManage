@@ -16,6 +16,7 @@
                    :currentPage="currentPage"
                    :pageSizes="[20]"
                    :pageSize="currentPageSize"
+                   :customize="true"
                    ref="allPatientTable">
         </tableList>
     </layout>
@@ -45,7 +46,8 @@ export default {
                 {
                     displayName: '栏目内容',
                     key: 'content',
-                    align: 'center'
+                    align: 'center',
+                    type: 'htmlParse'
                 },
                 {
                     displayName: '栏目类型',
@@ -116,6 +118,8 @@ export default {
                                 'yyyy-MM-dd hh:mm:ss'
                             )
                             item.columnType = this.format(item.columnType)
+                            item.content = item.content.replace(' ', '')
+                            console.log(111, item.content)
                             item.content =
                                 item.content.substring(0, 30) +
                                 (item.content.length > 30 ? '...' : '')
