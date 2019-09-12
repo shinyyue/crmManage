@@ -33,13 +33,12 @@ export default {
                 {
                     displayName: '实验名称',
                     key: 'expName',
-                    width: '80px',
                     align: 'center'
                 },
                 {
                     displayName: '实验简介',
                     key: 'expIntroduct',
-                    align: 'center'
+                    align: 'left'
                 },
                 {
                     displayName: '实验图片',

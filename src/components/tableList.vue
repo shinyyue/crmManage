@@ -99,7 +99,7 @@
                         <input v-else-if="column.type === 'radio'"
                                type="radio"
                                :checked="props.row[column.key]" />
-                        <div v-else-if="column.type === 'htmlParse'" v-html="props.row[column.key]"></div>
+                        <div v-else-if="column.type === 'htmlParse'" class="column-content-cut" v-html="props.row[column.key]"></div>
                         <div v-else
                              @click="cellClick(props)"
                              :class="{'content':column.ellipsis}">
@@ -216,7 +216,8 @@ export default {
         handleSelectionChange(list) {
             this.$emit('selectionChange', list)
         }
-    }
+    },
+    
 }
 </script>
 

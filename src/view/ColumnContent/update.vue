@@ -147,7 +147,8 @@ export default {
     },
     methods: {
         handleRemove(file) {
-            console.log(file)
+            this.imgList = []
+            this.imgUrl = ''
         },
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url
@@ -299,11 +300,11 @@ export default {
                         this.columnType = String(res.data.columnType)
                         this.title = res.data.title
                         this.content = res.data.content
-                        console.log(222, this.editor)
                         this.editor.txt.html(res.data.content)
                         this.linkUrl = res.data.linkUrl
                         this.videoUrl = res.data.videoUrl
-                        this.imgList = [{ url: res.data.showImg }]
+                        this.imgList = (res.data.showImg && [{ url: res.data.showImg }]) || []
+                        this.imgUrl = res.data.showImg
                     } else {
                         this.$notify.error({
                             message: res.msg || '修改栏目内容失败'

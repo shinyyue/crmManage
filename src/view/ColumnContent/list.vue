@@ -16,7 +16,6 @@
                    :currentPage="currentPage"
                    :pageSizes="[20]"
                    :pageSize="currentPageSize"
-                   :customize="true"
                    ref="allPatientTable">
         </tableList>
     </layout>
@@ -46,8 +45,9 @@ export default {
                 {
                     displayName: '栏目内容',
                     key: 'content',
-                    align: 'center',
-                    type: 'htmlParse'
+                    align: 'left',
+                    type: 'htmlParse',
+                    className: 'column-conten-text'
                 },
                 {
                     displayName: '栏目类型',
@@ -118,11 +118,9 @@ export default {
                                 'yyyy-MM-dd hh:mm:ss'
                             )
                             item.columnType = this.format(item.columnType)
-                            item.content = item.content.replace(' ', '')
-                            console.log(111, item.content)
-                            item.content =
-                                item.content.substring(0, 30) +
-                                (item.content.length > 30 ? '...' : '')
+                            // item.content =
+                            //     item.content.substring(0, 30) +
+                            //     (item.content.length > 30 ? '...' : '')
                         })
                     this.list = (res.data && res.data.items) || []
                     this.totalNum = (res.data && res.data.total) || 0
@@ -218,4 +216,7 @@ export default {
 </script>
 
 <style lang="less">
-</style>
+.column-conten-text{
+    max-height: 200px;
+}
+</style> 
