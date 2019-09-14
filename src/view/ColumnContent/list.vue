@@ -87,12 +87,20 @@ export default {
         },
         columnName: function() {
             return this.$route.query.columnName
+        },
+        pageType() {
+            return this.$route.query.type
         }
     },
 
     methods: {
         handleClose() {
             this.dialogVisible = false
+        },
+        getSimpleText(html) {
+            var re1 = new RegExp('<.+?>', 'g') //匹配html标签的正则表达式，"g"是搜索匹配多个符合的内容
+            var msg = html.replace(re1, '') //执行替换成空字符
+            return msg
         },
         getList() {
             const data = {
@@ -118,9 +126,10 @@ export default {
                                 'yyyy-MM-dd hh:mm:ss'
                             )
                             item.columnType = this.format(item.columnType)
-                            // item.content =
-                            //     item.content.substring(0, 30) +
-                            //     (item.content.length > 30 ? '...' : '')
+                            item.content = this.getSimpleText(item.content)
+                            item.content =
+                                item.content.substring(0, 30) +
+                                (item.content.length > 30 ? '...' : '')
                         })
                     this.list = (res.data && res.data.items) || []
                     this.totalNum = (res.data && res.data.total) || 0
@@ -130,18 +139,18 @@ export default {
         format(type) {
             let str = ''
             switch (Number(type)) {
-            case 1:
-                str = '文章'
-                break
-            case 2:
-                str = '图片'
-                break
-            case 3:
-                str = '视频'
-                break
-            default:
-                str = ''
-                break
+                case 1:
+                    str = '文章'
+                    break
+                case 2:
+                    str = '图片'
+                    break
+                case 3:
+                    str = '视频'
+                    break
+                default:
+                    str = ''
+                    break
             }
             return str
         },
@@ -204,7 +213,8 @@ export default {
                 query: {
                     columnId: data.columnId,
                     collegeId: data.collegeId,
-                    id: data.id
+                    id: data.id,
+                    type: this.pageType
                 }
             })
         }
@@ -216,7 +226,7 @@ export default {
 </script>
 
 <style lang="less">
-.column-conten-text{
+.column-conten-text {
     max-height: 200px;
 }
 </style> 

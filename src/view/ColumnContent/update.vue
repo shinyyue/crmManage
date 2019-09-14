@@ -13,7 +13,8 @@
                     <el-option label="图片"
                                value="2"></el-option>
                     <el-option label="视频 "
-                               value="3"></el-option>
+                               value="3"
+                               v-show="pageType !== 'college'"></el-option>
                     <!-- <el-option label="链接 "
                                value="4"></el-option> -->
                 </el-select>
@@ -73,7 +74,10 @@
                     <el-button size="small"
                                type="primary">点击上传</el-button>
                 </el-upload>
-                <video v-show="videoUrl" :src="videoUrl" controls="controls"></video>
+                <video v-show="videoUrl"
+                       :src="videoUrl"
+                       controls="controls"
+                       style="width:100%; "></video>
             </el-form-item>
             <el-form-item label="链接"
                           prop="content">
@@ -143,6 +147,9 @@ export default {
         },
         columnId() {
             return Number(this.$route.query.columnId)
+        },
+        pageType() {
+            return this.$route.query.type
         }
     },
     methods: {
@@ -243,6 +250,7 @@ export default {
             })
         },
         editContent() {
+            debugger
             const data = {
                 title: this.title,
                 content:
@@ -300,10 +308,13 @@ export default {
                         this.columnType = String(res.data.columnType)
                         this.title = res.data.title
                         this.content = res.data.content
+                        this.editorContent = res.data.content
                         this.editor.txt.html(res.data.content)
                         this.linkUrl = res.data.linkUrl
                         this.videoUrl = res.data.videoUrl
-                        this.imgList = (res.data.showImg && [{ url: res.data.showImg }]) || []
+                        this.imgList =
+                            (res.data.showImg && [{ url: res.data.showImg }]) ||
+                            []
                         this.imgUrl = res.data.showImg
                     } else {
                         this.$notify.error({
