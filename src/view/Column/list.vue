@@ -166,7 +166,7 @@ export default {
         },
         operateClick(props, item) {
             if (item === '查看栏目内容') {
-                props.type="college"
+                props.type = 'college'
                 this.jumpToDetails(props)
             } else if (item === '修改') {
                 this.form.name = props.row.columnName
@@ -195,7 +195,7 @@ export default {
             }
             const data = {
                 collegeId: Number(this.id) || 0,
-                columnId: this.checkedColumn.id,
+                columnId: this.checkedColumn.columnId,
                 columnName: this.form.name
             }
             this.$store.dispatch('editColumn', data).then(res => {
