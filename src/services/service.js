@@ -44,6 +44,10 @@ const editColumn = (data) => {
     return Vue.axios.put(API_ROOT + 'crmColleController/updateColumn', data)
 }
 
+const editSchoolColumn = (data) => {
+    return Vue.axios.put(API_ROOT + 'crmColleController/updateSchoolColumn', data)
+}
+
 const addColumnContent = (data) => {
     return Vue.axios.post(API_ROOT + 'columnContent/add', data)
 }
@@ -80,5 +84,6 @@ export default {
     addColumnContent,
     editColumnContent,
     getColumnContentDetails,
-    delColumnContent
+    delColumnContent,
+    editSchoolColumn
 }

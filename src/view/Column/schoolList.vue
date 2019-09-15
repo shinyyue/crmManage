@@ -188,10 +188,10 @@ export default {
             }
             const data = {
                 collegeId: Number(this.id) || 0,
-                columnId: this.checkedColumn.id,
+                id: this.checkedColumn.id,
                 columnName: this.form.name
             }
-            this.$store.dispatch('editColumn', data).then(res => {
+            this.$store.dispatch('editSchoolColumn', data).then(res => {
                 if (res.code === 200) {
                     this.$notify.success({
                         message: '修改成功！',

@@ -137,6 +137,21 @@ const actions = {
         })
     },
 
+    editSchoolColumn({
+        commit
+    }, data) {
+        return new Promise((resolve, reject) => {
+            service
+                .editSchoolColumn(data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
     getColumnListById({
         commit
     }, data) {
