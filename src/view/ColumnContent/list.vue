@@ -203,7 +203,8 @@ export default {
                 path: '/columncontent/update',
                 query: {
                     columnId: this.id,
-                    collegeId: this.collegeId
+                    collegeId: this.collegeId,
+                    type: this.pageType || ''
                 }
             })
         },
